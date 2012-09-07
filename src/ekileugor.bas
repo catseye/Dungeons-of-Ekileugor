@@ -1,4 +1,14 @@
-10 gosub 8000
+10 gosub 8000:goto 100
+
+rem short, frequently-called routines
+
+rem compute screen offset with delta and read char there
+
+20 o=((y+dy)*22)+(x+dx):th=peek(sc+o):return
+
+rem erase char at x,y
+
+30  o=(y*22)+x:pokesc+o,32:return
 
 rem main loop
 
@@ -14,13 +24,10 @@ rem main loop
 rem monsters move
 
 400 for i = 1 to m
-410 dx=0:ifhx<mx(i)thendx=-1
-420 ifhx>mx(i)thendx=+1
-430 dy=0:ifhy<my(i)thendy=-1
-440 ifhy>my(i)thendy=+1
-450 o=((my(i)+dy)*22)+(mx(i)+dx):th=peek(sc+o)
+410 x=mx(i):y=my(i):dx=sgn(hx-x):dy=sgn(hy-y)
+420 gosub 20
 455 if th<>32then490
-460 o=(my(i)*22)+mx(i):pokesc+o,32
+460 gosub 30
 470 mx(i)=mx(i)+dx:my(i)=my(i)+dy
 480 o=(my(i)*22)+mx(i):pokesc+o,19:pokecm+o,2
 490 next
@@ -29,21 +36,15 @@ rem monsters move
 
 rem hero can (and does) move
 
-500 o=((hy+dy)*22)+(hx+dx):th=peek(sc+o)
+500 x=hx:y=hy:gosub 20
 505 if th<>32then400
-507 gosub720
-510 hx=hx+dx:hy=hy+dy:gosub700
+510 gosub30:hx=hx+dx:hy=hy+dy:gosub700
 520 goto400
 
 rem draw hero
 
 700 o=(hy*22)+hx:pokesc+o,81:pokecm+o,6
 710 return
-
-rem erase hero
-
-720 o=(hy*22)+hx:pokesc+o,32
-730 return
 
 rem status
 
