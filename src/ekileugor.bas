@@ -33,6 +33,12 @@ rem mh        : max hit points
 rem au        : gold
 rem pt        : health potions
 
+rem r%(#,p)   : room matrix: first dimension is room number, second:
+rem           :   0 = room x (nw corner)
+rem           :   1 = room y (nw corner)
+rem           :   2 = room x (se corner)
+rem           :   3 = room y (se corner)
+
 10 gosub 8000:goto 100
 
 rem short, frequently-called routines
@@ -51,7 +57,7 @@ rem write char ch with color co at x,y
 
 rem get random unoccupied x,y
 
-50 x=int(rnd(1)*20)+2:y=int(rnd(1)*20)+2:gosub20
+50 x=int(rnd(1)*20)+2:y=int(rnd(1)*20)+2:dx=0:dy=0:gosub20
 51 ifth<>32then50
 52 return
 
@@ -167,27 +173,46 @@ rem wait for keypress
 4104 return
 
 rem init level
+rem ... first make some rooms
+rem ... (this part isn't as clever as it should be)
 
-7000 m=5
+7000 fori=1to5
+7010 r%(i,0)=int(rnd(1)*15)+2:r%(i,1)=int(rnd(1)*15)+2
+7020 dx=int(rnd(1)*5)+1:dy=int(rnd(1)*5)+1
+7030 r%(i,2)=r%(i,0)+dx:r%(i,3)=r%(i,1)+dy
+7035 co=0:ch=160
+7040 forx=r%(i,0)tor%(i,2)
+7050 fory=r%(i,1)tor%(i,3)
+7055 gosub40
+7060 next
+7070 next
+7080 next
 
-7010 fori=1tom
-7020 gosub50:ch=19:co=2:gosub40
-7025 m%(i,0)=x:m%(i,1)=y:m%(i,2)=19:m%(i,3)=rnd(1)*6+1
-7030 next
+rem ... here thar be monsters
 
-7050 fori=1to10:gosub50:ch=28:co=7:gosub40:next
+7100 m=5
+7110 fori=1tom
+7120 gosub50:ch=19:co=2:gosub40
+7125 m%(i,0)=x:m%(i,1)=y:m%(i,2)=19:m%(i,3)=rnd(1)*6+1
+7130 next
+
+rem ... and gold
+
+7150 fori=1to10:gosub50:ch=28:co=7:gosub40:next
+
+rem ... and you!
+
+7200 gosub50:hx=x:hy=y:ch=81:co=6:gosub40
 
 7090 return
 
 rem init
 
-8000 dim m%(10,5)
-8005 hx=11:hy=11:m=1
-8007 sg=10:in=11:de=12:mh=31:hp=mh:au=0:pt=0
+8000 dim m%(10,5),r%(5,4)
+8005 sg=10:in=11:de=12:mh=31:hp=mh:au=0:pt=0
 8010 sc=7680:cm=38400:sb=0:mu=0
 8020 print"{clr}"
 8025 gosub 2000
-8030 x=hx:y=hy:ch=81:co=6:gosub40
 8040 gosub 7000
 8999 return
 
