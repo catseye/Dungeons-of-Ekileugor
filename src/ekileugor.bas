@@ -32,6 +32,7 @@ rem hp        : hit points
 rem mh        : max hit points
 rem au        : gold
 rem pt        : health potions
+rem dl        : dungeon level
 
 rem r%(#,p)   : room matrix: first dimension is room number, second:
 rem           :   0 = room x (nw corner)
@@ -95,6 +96,7 @@ rem hero can (and does) move
 500 x=hx:y=hy:gosub 20
 510 ifth=19thengosub700
 520 ifth=28thenau=au+int(rnd(1)*20)+1:th=32
+525 ifth=233thendl=dl+1:gosub7000:goto100
 530 if th<>32then400
 540 gosub30:x=x+dx:y=y+dy:ch=81:co=6:gosub40:hx=x:hy=y
 550 goto400
@@ -138,7 +140,7 @@ rem status
 1010 ifsb=1thenprint"gold";au;
 1012 ifsb=2thenprint"potion";pt;
 1015 ifsb=3thenprint"str";sg;"int";in;"dex";de;
-1085 fori=pos(0)to22:print" ";:next
+1085 fori=pos(0)to21:print" ";:next
 1090 print"{rvs off}";:return
 
 rem erase status
@@ -151,7 +153,7 @@ rem display message
 
 4000 ifmu<>0thengosub4100
 4010 print"{home}{blk}{rvs on} ";m$;
-4020 fori=pos(0)to22:print" ";:next
+4020 fori=pos(0)to21:print" ";:next
 4030 mu=1
 4040 return
 
@@ -223,28 +225,26 @@ rem ... tunnel complete.
 
 rem ... here thar be monsters
 
-7300 m=5
-7310 fori=1tom
-7320 gosub50:ch=19:co=2:gosub40
-7325 m%(i,0)=x:m%(i,1)=y:m%(i,2)=19:m%(i,3)=rnd(1)*6+1
-7330 next
+7500 m=5
+7510 fori=1tom
+7520 gosub50:ch=19:co=2:gosub40
+7525 m%(i,0)=x:m%(i,1)=y:m%(i,2)=19:m%(i,3)=rnd(1)*6+1
+7530 next
 
-rem ... and gold
+rem ... and gold, and stairs, and you
 
-7400 fori=1to10:gosub50:ch=28:co=7:gosub40:next
-
-rem ... and you!
-
-7500 gosub50:hx=x:hy=y:ch=81:co=6:gosub40
+7800 fori=1to10:gosub50:ch=28:co=7:gosub40:next
+7810 gosub50:ch=233:co=0:gosub40
+7820 gosub50:hx=x:hy=y:ch=81:co=6:gosub40
 
 7900 return
 
 rem init
 
 8000 dim m%(10,5),r%(4,4)
-8005 sg=10:in=11:de=12:mh=31:hp=mh:au=0:pt=0
+8005 sg=10:in=11:de=12:mh=31:hp=mh:au=0:pt=0:dl=1
 8010 sc=7680:cm=38400:sb=0:mu=0
-8040 gosub 7000
+8020 gosub7000
 8999 return
 
 rem died
