@@ -96,7 +96,7 @@ rem hero attack monster!
 rem ... first, find monster
 
 700 mn=1
-705 ifm%(mn,0)=x+dxandm%(mn,1)=y+dythen720
+705 ifm%(mn,0)=hx+dxandm%(mn,1)=hy+dythen720
 710 mn=mn+1:ifmn<=mthen705
 715 stop:rem something is wrong
 
@@ -108,14 +108,20 @@ rem ... see if hit. simple for now.
 735 m$="you hit for"+str$(dm):gosub4000
 740 m%(mn,3)=m%(mn,3)-dm
 745 ifm%(mn,3)>0thenreturn
-750 m%(mn,3)=0:m$="you killed snake":gosub4000
-760 x=m%(mn,0):y=m%(mn,1):gosub30:x=hx:y=hy
+750 m$="you killed snake":gosub4000
+760 x=m%(mn,0):y=m%(mn,1):gosub30
+765 m%(mn,0)=-1:m%(mn,1)=-1:m%(mn,3)=0
+780 x=hx:y=hy
 790 return
 
 rem monster attack hero!
 
-800 m$="snake misses":gosub4000
-890 return
+800 if int(rnd(1)*6)<2 then 830
+820 m$="snake misses":gosub4000:return
+830 dm=int(rnd(1)*4)+1
+835 m$="snake hits for"+str$(dm):gosub4000
+840 hp=hp-dm:ifhp>0thenreturn
+850 goto 9000
 
 rem status
 
@@ -184,3 +190,10 @@ rem init
 8030 x=hx:y=hy:ch=81:co=6:gosub40
 8040 gosub 7000
 8999 return
+
+rem died
+
+9000 m$="you have died":gosub4000
+9010 m$="on dungeon level"+str$(dl):gosub4000
+9020 m$="with"+str$(au)+"gold":gosub4000:gosub4000
+9030 print "{clr}"
