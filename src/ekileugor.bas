@@ -43,7 +43,7 @@ rem draw hero
 rem erase hero
 
 720 o=(hy*22)+hx:pokesc+o,32
-710 return
+730 return
 
 rem status
 
