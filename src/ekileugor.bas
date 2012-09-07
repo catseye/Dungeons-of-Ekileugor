@@ -146,18 +146,6 @@ rem erase status
 1105 ifsb>3thensb=0
 1110 return
 
-rem draw border
-
-2000 forx=0to21
-2010 pokesc+x,160:pokecm+x,0
-2020 pokesc+484+x,160:pokecm+484+x,0
-2030 next
-2040 fory=0to22
-2050 pokesc+y*22,160:pokecm+y*22,0
-2060 pokesc+21+y*22,160:pokecm+21+y*22,0
-2070 next
-2080 return
-
 rem display message
 
 4000 ifmu<>0thengosub4100
@@ -173,46 +161,55 @@ rem wait for keypress
 4104 return
 
 rem init level
-rem ... first make some rooms
+
+rem ... first clear the screen
+
+7000 print"{blk}{clr}{rvs on}";
+7010 fory=0to20
+7020 print"                      ";
+7030 next
+7040 print"{rvs off}"
+7050 co=0:ch=160:y=21:forx=0to21:gosub40:next
+7055 y=22:forx=0to21:gosub40:next
+
+rem ... then make some rooms
 rem ... (this part isn't as clever as it should be)
 
-7000 fori=1to5
-7010 r%(i,0)=int(rnd(1)*15)+2:r%(i,1)=int(rnd(1)*15)+2
-7020 dx=int(rnd(1)*5)+1:dy=int(rnd(1)*5)+1
-7030 r%(i,2)=r%(i,0)+dx:r%(i,3)=r%(i,1)+dy
-7035 co=0:ch=160
-7040 forx=r%(i,0)tor%(i,2)
-7050 fory=r%(i,1)tor%(i,3)
-7055 gosub40
-7060 next
-7070 next
-7080 next
+7100 fori=1to5
+7110 r%(i,0)=int(rnd(1)*15)+2:r%(i,1)=int(rnd(1)*15)+2
+7120 dx=int(rnd(1)*5)+1:dy=int(rnd(1)*5)+1
+7130 r%(i,2)=r%(i,0)+dx:r%(i,3)=r%(i,1)+dy
+7135 co=0:ch=32
+7140 forx=r%(i,0)tor%(i,2)
+7150 fory=r%(i,1)tor%(i,3)
+7155 gosub40
+7160 next
+7170 next
+7180 next
 
 rem ... here thar be monsters
 
-7100 m=5
-7110 fori=1tom
-7120 gosub50:ch=19:co=2:gosub40
-7125 m%(i,0)=x:m%(i,1)=y:m%(i,2)=19:m%(i,3)=rnd(1)*6+1
-7130 next
+7200 m=5
+7210 fori=1tom
+7220 gosub50:ch=19:co=2:gosub40
+7225 m%(i,0)=x:m%(i,1)=y:m%(i,2)=19:m%(i,3)=rnd(1)*6+1
+7230 next
 
 rem ... and gold
 
-7150 fori=1to10:gosub50:ch=28:co=7:gosub40:next
+7300 fori=1to10:gosub50:ch=28:co=7:gosub40:next
 
 rem ... and you!
 
-7200 gosub50:hx=x:hy=y:ch=81:co=6:gosub40
+7400 gosub50:hx=x:hy=y:ch=81:co=6:gosub40
 
-7090 return
+7900 return
 
 rem init
 
 8000 dim m%(10,5),r%(5,4)
 8005 sg=10:in=11:de=12:mh=31:hp=mh:au=0:pt=0
 8010 sc=7680:cm=38400:sb=0:mu=0
-8020 print"{clr}"
-8025 gosub 2000
 8040 gosub 7000
 8999 return
 
