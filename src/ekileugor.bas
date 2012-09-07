@@ -1,14 +1,47 @@
+rem dungeons of ekileugor
+
+rem i         : temporary (loops)
+
+rem x,y       : temporary position (used by all)
+rem ch        : temporary char to write (screen code)
+rem co        : temporary colour to assign
+rem sc        : screen memory (constant)
+rem cm        : color memory (constant)
+rem o         : temporary screen offset
+rem th        : temporary screen contents
+
+rem sb        : status bar mode
+rem mu        : message-up flag
+
+rem hx,hy     : hero's position
+rem m         : number of monsters
+rem mn        : current monster number
+rem mx(),my() : monster position
+rem dx,dy     : delta for move (both hero and monsters)
+
+rem sg        : strength
+rem in        : intelligence
+rem de        : dexterity
+rem hp        : hit points
+rem mh        : max hit points
+rem au        : gold
+rem pt        : health potions
+
 10 gosub 8000:goto 100
 
 rem short, frequently-called routines
 
 rem compute screen offset with delta and read char there
 
-20 o=((y+dy)*22)+(x+dx):th=peek(sc+o):return
+20 o=(y+dy)*22+x+dx:th=peek(sc+o):return
 
-rem erase char at x,y
+rem erase char at x,y: falls through to line 40
 
-30  o=(y*22)+x:pokesc+o,32:return
+30 ch=32:co=0
+
+rem write char ch with color co at x,y
+
+40 o=y*22+x:pokesc+o,ch:pokecm+o,co:return
 
 rem main loop
 
@@ -29,8 +62,8 @@ rem monsters move
 430 if th=81thengosub800
 455 if th<>32then490
 460 gosub 30
-470 mx(mn)=mx(mn)+dx:my(mn)=my(mn)+dy
-480 o=(my(mn)*22)+mx(mn):pokesc+o,19:pokecm+o,2
+470 x=x+dx:y=y+dy:ch=19:co=2:gosub40
+480 mx(mn)=x:my(mn)=y
 490 next
 
 499 goto 100
@@ -39,15 +72,10 @@ rem hero can (and does) move
 
 500 x=hx:y=hy:gosub 20
 505 if th<>32then400
-510 gosub30:hx=hx+dx:hy=hy+dy:gosub700
+510 gosub30:x=x+dx:y=y+dy:ch=81:co=6:gosub40:hx=x:hy=y
 520 goto400
 
-rem draw hero
-
-700 o=(hy*22)+hx:pokesc+o,81:pokecm+o,6
-710 return
-
-rem monster attack (monster number = i)
+rem monster attack
 
 800 m$="snake misses":gosub4000
 890 return
@@ -108,35 +136,12 @@ rem init level
 
 rem init
 
-rem x,y       : temporary position (used by all)
-rem hx,hy     : hero's position
-rem m         : number of monsters
-rem mn        : current monster number
-rem mx(),my() : monster position
-rem dx,dy     : delta for move (both hero and monsters)
-
-rem sg        : strength
-rem in        : intelligence
-rem de        : dexterity
-rem hp        : hit points
-rem mh        : max hit points
-rem au        : gold
-rem pt        : health potions
-
-rem sc        : screen memory
-rem cm        : color memory
-rem sb        : status bar mode
-rem i         : temporary (loops)
-rem o         : temporary (screen offset)
-rem th        : temporary (screen contents)
-rem mu        : message-up flag
-
 8000 dim mx(10),my(10)
 8005 hx=11:hy=11:m=1
 8007 sg=10:in=11:de=12:mh=31:hp=mh:au=0:pt=0
 8010 sc=7680:cm=38400:sb=0:mu=0
 8020 print"{clr}"
 8025 gosub 2000
-8030 gosub 700
+8030 x=hx:y=hy:ch=81:co=6:gosub40
 8040 gosub 7000
 8999 return
