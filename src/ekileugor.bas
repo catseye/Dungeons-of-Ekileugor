@@ -47,12 +47,14 @@ rem main loop
 
 100 gosub 1000:mu=0
 102 dx=0:dy=0
-105 get k$:if k$="" then 105
+105 getk$:if k$=""then105
 110 if k$="i" then dy=-1:goto 500
 120 if k$="j" then dx=-1:goto 500
 130 if k$="k" then dy=1:goto 500
 140 if k$="l" then dx=1:goto 500
-150 if k$=" " then gosub1100:goto 100
+150 if k$="{f1}"thensb=sb+1:gosub1100
+160 if k$="r"then400
+180 goto 100
 
 rem monsters move
 
@@ -71,11 +73,17 @@ rem monsters move
 rem hero can (and does) move
 
 500 x=hx:y=hy:gosub 20
+502 if th=19thengosub700
 505 if th<>32then400
 510 gosub30:x=x+dx:y=y+dy:ch=81:co=6:gosub40:hx=x:hy=y
 520 goto400
 
-rem monster attack
+rem hero attack monster!
+
+700 m$="you miss":gosub4000
+790 return
+
+rem monster attack hero!
 
 800 m$="snake misses":gosub4000
 890 return
@@ -91,10 +99,10 @@ rem status
 1085 fori=pos(0)to22:print" ";:next
 1090 print"{rvs off}";:return
 
-rem toggle status
+rem erase status
 
 1100 print"{home}{blk}{rvs on}                      ";
-1105 sb=sb+1:ifsb>3thensb=0
+1105 ifsb>3thensb=0
 1110 return
 
 rem draw border

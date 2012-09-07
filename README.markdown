@@ -32,11 +32,12 @@ Playing the Game
 
 Use the following keys:
 
-*   `I` - go north
-*   `J` - go west
-*   `L` - go east
-*   `K` - go south
-*   space - toggle status bar view
+*   `I` - go (or attack) north
+*   `J` - go (or attack) west
+*   `L` - go (or attack) east
+*   `K` - go (or attack) south
+*   `R` - rest
+*   F1  - toggle status bar view
 
 If something notable happened during the turn, a message about it will
 replace the status bar at the beginning of the next turn.  You can press
