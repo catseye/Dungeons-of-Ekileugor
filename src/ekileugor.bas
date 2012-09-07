@@ -3,6 +3,7 @@ rem dungeons of ekileugor
 rem i         : temporary (loops)
 
 rem x,y       : temporary position (used by all)
+rem dx,dy     : delta for move (used by all)
 rem ch        : temporary char to write (screen code)
 rem co        : temporary colour to assign
 rem sc        : screen memory (constant)
@@ -16,8 +17,13 @@ rem mu        : message-up flag
 rem hx,hy     : hero's position
 rem m         : number of monsters
 rem mn        : current monster number
-rem mx(),my() : monster position
-rem dx,dy     : delta for move (both hero and monsters)
+rem m%(#,p)   : monster matrix: first dimension is mn, second is:
+rem           :   0 = x position
+rem           :   1 = y position
+rem           :   2 = monster type (= screen code)
+rem           :   3 = monster hp
+
+rem dm        : damage done during combat
 
 rem sg        : strength
 rem in        : intelligence
@@ -65,13 +71,14 @@ rem main loop
 rem monsters move
 
 400 for mn = 1 to m
-410 x=mx(mn):y=my(mn):dx=sgn(hx-x):dy=sgn(hy-y)
+405 ifm%(mn,3)<=0then490
+410 x=m%(mn,0):y=m%(mn,1):dx=sgn(hx-x):dy=sgn(hy-y)
 420 gosub 20
 430 if th=81thengosub800
 455 if th<>32then490
 460 gosub 30
 470 x=x+dx:y=y+dy:ch=19:co=2:gosub40
-480 mx(mn)=x:my(mn)=y
+480 m%(mn,0)=x:m%(mn,1)=y
 490 next
 
 499 goto 100
@@ -86,8 +93,23 @@ rem hero can (and does) move
 550 goto400
 
 rem hero attack monster!
+rem ... first, find monster
 
-700 m$="you miss":gosub4000
+700 mn=1
+705 ifm%(mn,0)=x+dxandm%(mn,1)=y+dythen720
+710 mn=mn+1:ifmn<=mthen705
+715 stop:rem something is wrong
+
+rem ... see if hit. simple for now.
+
+720 if int(rnd(1)*6)<3 then 730
+725 m$="you miss":gosub4000:return
+730 dm=int(rnd(1)*6)+1
+735 m$="you hit for"+str$(dm):gosub4000
+740 m%(mn,3)=m%(mn,3)-dm
+745 ifm%(mn,3)>0thenreturn
+750 m%(mn,3)=0:m$="you killed snake":gosub4000
+760 x=m%(mn,0):y=m%(mn,1):gosub30:x=hx:y=hy
 790 return
 
 rem monster attack hero!
@@ -143,7 +165,8 @@ rem init level
 7000 m=5
 
 7010 fori=1tom
-7020 gosub50:ch=19:co=2:gosub40:mx(i)=x:my(i)=y
+7020 gosub50:ch=19:co=2:gosub40
+7025 m%(i,0)=x:m%(i,1)=y:m%(i,2)=19:m%(i,3)=rnd(1)*6+1
 7030 next
 
 7050 fori=1to10:gosub50:ch=28:co=7:gosub40:next
@@ -152,7 +175,7 @@ rem init level
 
 rem init
 
-8000 dim mx(10),my(10)
+8000 dim m%(10,5)
 8005 hx=11:hy=11:m=1
 8007 sg=10:in=11:de=12:mh=31:hp=mh:au=0:pt=0
 8010 sc=7680:cm=38400:sb=0:mu=0
