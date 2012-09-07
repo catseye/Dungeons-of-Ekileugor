@@ -36,8 +36,9 @@ rem pt        : health potions
 rem r%(#,p)   : room matrix: first dimension is room number, second:
 rem           :   0 = room x (nw corner)
 rem           :   1 = room y (nw corner)
-rem           :   2 = room x (se corner)
-rem           :   3 = room y (se corner)
+rem           :   2 = room width
+rem           :   3 = room height
+rem dr        : destination room during dungeon level creation
 
 10 gosub 8000:goto 100
 
@@ -175,39 +176,72 @@ rem ... first clear the screen
 rem ... then make some rooms
 rem ... (this part isn't as clever as it should be)
 
-7100 fori=1to5
+7100 fori=0to4
 7110 r%(i,0)=int(rnd(1)*15)+2:r%(i,1)=int(rnd(1)*15)+2
-7120 dx=int(rnd(1)*5)+1:dy=int(rnd(1)*5)+1
-7130 r%(i,2)=r%(i,0)+dx:r%(i,3)=r%(i,1)+dy
+7120 r%(i,2)=int(rnd(1)*5)+1:r%(i,3)=int(rnd(1)*5)+1
 7135 co=0:ch=32
-7140 forx=r%(i,0)tor%(i,2)
-7150 fory=r%(i,1)tor%(i,3)
+7140 forx=r%(i,0)tor%(i,0)+r%(i,2)
+7150 fory=r%(i,1)tor%(i,1)+r%(i,3)
 7155 gosub40
 7160 next
 7170 next
-7180 next
+
+rem ... now, for each room i > 0,
+
+7180 ifi=0then7290
+
+rem ... pick a room dr < i,
+
+7190 dr=int(rnd(1)*i)
+
+rem ... and draw a tunnel to it, as follows:
+rem ... pick a random location on room i's north wall
+
+7200 rx=int(rnd(1)*r%(i,2))+r%(i,0)
+
+rem ... pick a random location on room dr's west wall
+
+7210 ry=int(rnd(1)*r%(dr,3))+r%(dr,1)
+
+rem ... tunnel north or south as appropriate...
+
+7220 x=rx:y=r%(i,1)
+
+rem 7230 ch=14:co=4:gosub40
+7230 gosub30
+7240 ify<>rytheny=y+sgn(ry-y):goto7230
+
+rem ... tunnel east or west as appropriate.
+
+rem ch=5:co=5:gosub40
+7250 gosub30
+7260 ifx<>r%(dr,0)thenx=x+sgn(r%(dr,0)-x):goto7250
+
+rem ... tunnel complete.
+
+7290 next
 
 rem ... here thar be monsters
 
-7200 m=5
-7210 fori=1tom
-7220 gosub50:ch=19:co=2:gosub40
-7225 m%(i,0)=x:m%(i,1)=y:m%(i,2)=19:m%(i,3)=rnd(1)*6+1
-7230 next
+7300 m=5
+7310 fori=1tom
+7320 gosub50:ch=19:co=2:gosub40
+7325 m%(i,0)=x:m%(i,1)=y:m%(i,2)=19:m%(i,3)=rnd(1)*6+1
+7330 next
 
 rem ... and gold
 
-7300 fori=1to10:gosub50:ch=28:co=7:gosub40:next
+7400 fori=1to10:gosub50:ch=28:co=7:gosub40:next
 
 rem ... and you!
 
-7400 gosub50:hx=x:hy=y:ch=81:co=6:gosub40
+7500 gosub50:hx=x:hy=y:ch=81:co=6:gosub40
 
 7900 return
 
 rem init
 
-8000 dim m%(10,5),r%(5,4)
+8000 dim m%(10,5),r%(4,4)
 8005 sg=10:in=11:de=12:mh=31:hp=mh:au=0:pt=0
 8010 sc=7680:cm=38400:sb=0:mu=0
 8040 gosub 7000
