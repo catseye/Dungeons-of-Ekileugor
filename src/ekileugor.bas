@@ -12,7 +12,7 @@ rem erase char at x,y
 
 rem main loop
 
-100 gosub 1000
+100 gosub 1000:mu=0
 102 dx=0:dy=0
 105 get k$:if k$="" then 105
 110 if k$="i" then dy=-1:goto 500
@@ -23,13 +23,14 @@ rem main loop
 
 rem monsters move
 
-400 for i = 1 to m
-410 x=mx(i):y=my(i):dx=sgn(hx-x):dy=sgn(hy-y)
+400 for mn = 1 to m
+410 x=mx(mn):y=my(mn):dx=sgn(hx-x):dy=sgn(hy-y)
 420 gosub 20
+430 if th=81thengosub800
 455 if th<>32then490
 460 gosub 30
-470 mx(i)=mx(i)+dx:my(i)=my(i)+dy
-480 o=(my(i)*22)+mx(i):pokesc+o,19:pokecm+o,2
+470 mx(mn)=mx(mn)+dx:my(mn)=my(mn)+dy
+480 o=(my(mn)*22)+mx(mn):pokesc+o,19:pokecm+o,2
 490 next
 
 499 goto 100
@@ -46,9 +47,15 @@ rem draw hero
 700 o=(hy*22)+hx:pokesc+o,81:pokecm+o,6
 710 return
 
+rem monster attack (monster number = i)
+
+800 m$="snake misses":gosub4000
+890 return
+
 rem status
 
-1000 print"{home}{blk}{rvs on} ";
+1000 ifmu<>0thenreturn
+1002 print"{home}{blk}{rvs on} ";
 1005 ifsb=0thenprint"hp";hp;"/";mh;
 1010 ifsb=1thenprint"gold";au;
 1012 ifsb=2thenprint"potion";pt;
@@ -74,6 +81,20 @@ rem draw border
 2070 next
 2080 return
 
+rem display message
+
+4000 ifmu<>0thengosub4100
+4010 print"{home}{blk}{rvs on} ";m$;
+4020 fori=pos(0)to22:print" ";:next
+4030 mu=1
+4040 return
+
+rem wait for keypress
+
+4100 print "{home}Z";
+4102 getkk$:ifkk$=""then4102
+4104 return
+
 rem init level
 
 7000 m=5
@@ -87,8 +108,10 @@ rem init level
 
 rem init
 
+rem x,y       : temporary position (used by all)
 rem hx,hy     : hero's position
 rem m         : number of monsters
+rem mn        : current monster number
 rem mx(),my() : monster position
 rem dx,dy     : delta for move (both hero and monsters)
 
@@ -104,13 +127,14 @@ rem sc        : screen memory
 rem cm        : color memory
 rem sb        : status bar mode
 rem i         : temporary (loops)
-rem o         : temporary (screen pos)
+rem o         : temporary (screen offset)
 rem th        : temporary (screen contents)
+rem mu        : message-up flag
 
 8000 dim mx(10),my(10)
 8005 hx=11:hy=11:m=1
 8007 sg=10:in=11:de=12:mh=31:hp=mh:au=0:pt=0
-8010 sc=7680:cm=38400:sb=0
+8010 sc=7680:cm=38400:sb=0:mu=0
 8020 print"{clr}"
 8025 gosub 2000
 8030 gosub 700
