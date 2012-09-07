@@ -43,6 +43,12 @@ rem write char ch with color co at x,y
 
 40 o=y*22+x:pokesc+o,ch:pokecm+o,co:return
 
+rem get random unoccupied x,y
+
+50 x=int(rnd(1)*20)+2:y=int(rnd(1)*20)+2:gosub20
+51 ifth<>32then50
+52 return
+
 rem main loop
 
 100 gosub 1000:mu=0
@@ -73,10 +79,11 @@ rem monsters move
 rem hero can (and does) move
 
 500 x=hx:y=hy:gosub 20
-502 if th=19thengosub700
-505 if th<>32then400
-510 gosub30:x=x+dx:y=y+dy:ch=81:co=6:gosub40:hx=x:hy=y
-520 goto400
+510 ifth=19thengosub700
+520 ifth=28thenau=au+int(rnd(1)*20)+1:th=32
+530 if th<>32then400
+540 gosub30:x=x+dx:y=y+dy:ch=81:co=6:gosub40:hx=x:hy=y
+550 goto400
 
 rem hero attack monster!
 
@@ -134,12 +141,13 @@ rem wait for keypress
 rem init level
 
 7000 m=5
+
 7010 fori=1tom
-7015 mx(i)=int(rnd(1)*20)+2:my(i)=int(rnd(1)*20)+2
-7020 o=my(i)*22+mx(i):th=peek(sc+o)
-7025 if th<>32 then 7015
-7030 pokesc+o,19:pokecm+o,2
-7040 next
+7020 gosub50:ch=19:co=2:gosub40:mx(i)=x:my(i)=y
+7030 next
+
+7050 fori=1to10:gosub50:ch=28:co=7:gosub40:next
+
 7090 return
 
 rem init
