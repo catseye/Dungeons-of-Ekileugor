@@ -12,6 +12,8 @@ rem o         : temporary screen offset
 rem th        : temporary screen contents
 
 rem sb        : status bar mode
+rem m$        : message to print
+rem mv        : number to print after message (if not -1)
 rem mu        : message-up flag
 
 rem hx,hy     : hero's position
@@ -115,13 +117,13 @@ rem ... SOMETHING IS WRONG.
 
 rem ... see if hit. simple for now.
 
-720 ifint(rnd(1)*6)<3then730
+720 mv=-1:ifint(rnd(1)*6)<3then730
 725 m$="you miss":gosub4000:return
-730 dm=int(rnd(1)*6)+1
-735 m$="you hit for"+str$(dm):gosub4000
+730 dm=int(rnd(1)*6)+1:mv=dm
+735 m$="you hit for":gosub4000
 740 m%(mn,3)=m%(mn,3)-dm
 745 ifm%(mn,3)>0thenreturn
-750 m$="you killed snake":gosub4000
+750 mv=-1:m$="you killed snake":gosub4000
 760 x=m%(mn,0):y=m%(mn,1):gosub30
 765 m%(mn,0)=-1:m%(mn,1)=-1:m%(mn,3)=0
 780 x=hx:y=hy
@@ -129,10 +131,10 @@ rem ... see if hit. simple for now.
 
 rem monster attack hero!
 
-800 ifint(rnd(1)*6)<2then830
+800 mv=-1:ifint(rnd(1)*6)<2then830
 820 m$="snake misses":gosub4000:return
-830 dm=int(rnd(1)*4)+1
-835 m$="snake hits for"+str$(dm):gosub4000
+830 dm=int(rnd(1)*4)+1:mv=dm
+835 m$="snake hits for":gosub4000
 840 hp=hp-dm:ifhp>0thenreturn
 850 goto9000
 
@@ -140,10 +142,10 @@ rem status
 
 1000 ifmu<>0thenreturn
 1002 print"{home}{blk}{rvs on} ";
-1005 ifsb=0thenprint"hp";hp;"/";mh;
-1010 ifsb=1thenprint"gold";au;
-1012 ifsb=2thenprint"potion";pt;
-1015 ifsb=3thenprint"str";sg;"int";in;"dex";de;
+1005 ifsb=0thenprint"hp"hp"{left} /"mh"{left} ";
+1010 ifsb=1thenprint"gold"au"{left} "
+1012 ifsb=2thenprint"potion"pt"{left} "
+1015 ifsb=3thenprint"str"sg"{left} int"in"{left} dex"de"{left} ";
 1085 fori=pos(0)to21:print" ";:next
 1090 print"{rvs off}";:return
 
@@ -156,7 +158,8 @@ rem erase status
 rem display message
 
 4000 ifmu<>0thengosub4100
-4010 print"{home}{blk}{rvs on} ";m$;
+4010 print"{home}{blk}{rvs on} "m$;
+4015 ifmv>0thenprintmv"{left} ";
 4020 fori=pos(0)to21:print" ";:next
 4030 mu=1:return
 
@@ -290,16 +293,16 @@ rem ... place hero
 rem init
 
 8000 dim m%(9,3),r%(4,3)
-8005 sg=10:in=11:de=12:mh=31:hp=mh:au=0:pt=0:dl=1:mm=9
-8010 sc=7680:cm=38400:sb=0:mu=0
+8005 sg=10:in=11:de=12:mh=31:hp=mh:dl=1:mm=9
+8010 sc=7680:cm=38400
 8012 print"{clr}"
 8015 m$="hit any key to begin":gosub4000:gosub4000
-8020 gosub7000
-8999 return
+rem ... tricky! tricky! tail call!
+8020 goto7000
 
 rem died
 
-9000 m$="you have died":gosub4000
-9010 m$="on dungeon level"+str$(dl):gosub4000
-9020 m$="with"+str$(au)+" gold":gosub4000:gosub4000
+9000 m$="you have died":mv=-1:gosub4000
+9010 m$="on dungeon level":mv=dl:gosub4000
+9020 m$="with gold":mv=au:gosub4000:gosub4000
 9030 print "{clr}"
