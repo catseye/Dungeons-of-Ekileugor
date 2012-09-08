@@ -181,7 +181,7 @@ rem figure out which room x+dx,y+dy is in
 6070 next
 
 rem ... if dr still=-1, SOMETHING IS WRONG, it will crash below.
-rem ... reveal room dr
+rem ... reveal room dr (NOTE: this is also an entry point to this subroutine)
 
 6100 co=0:ch=32
 6140 forx=r%(dr,0)tor%(dr,0)+r%(dr,2)
@@ -283,16 +283,14 @@ rem ... now shadow in the rooms
 7325 next
 7327 next
 
-rem ... place hero
-
-7400 dx=0:dy=0
-7410 x=int(rnd(1)*20)+2:y=int(rnd(1)*20)+2:gosub20
-7420 ifth<>32then7410
-7430 hx=x:hy=y:ch=81:co=6:gosub40
-
 rem ... and pick which room has the stairs
 
-7600 rs=int(rnd(1)*5)
+7340 rs=int(rnd(1)*5)
+
+rem ... place hero.  pick a room and reveal it.  then put him in it, dammit.
+
+7400 dr=int(rnd(1)*5):gosub6100:gosub60
+7410 hx=x:hy=y:ch=81:co=6:gosub40
 
 7900 return
 
