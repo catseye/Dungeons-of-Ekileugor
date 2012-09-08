@@ -42,6 +42,7 @@ rem           :   1 = room y (nw corner)
 rem           :   2 = room width minus one
 rem           :   3 = room height minus one
 rem dr        : destination room during dungeon level creation & revealing
+rem rs        : room with stairs (picked during level creation)
 
 10 gosub 8000:goto100
 
@@ -143,8 +144,8 @@ rem status
 1000 ifmu<>0thenreturn
 1002 print"{home}{blk}{rvs on} ";
 1005 ifsb=0thenprint"hp"hp"{left} /"mh"{left} ";
-1010 ifsb=1thenprint"gold"au"{left} "
-1012 ifsb=2thenprint"potion"pt"{left} "
+1010 ifsb=1thenprint"gold"au"{left} ";
+1012 ifsb=2thenprint"potion"pt"{left} ";
 1015 ifsb=3thenprint"str"sg"{left} int"in"{left} dex"de"{left} ";
 1085 fori=pos(0)to21:print" ";:next
 1090 print"{rvs off}";:return
@@ -201,8 +202,9 @@ rem ... and gold
 
 6300 j=int(rnd(1)*3):fori=1toj:gosub60:ch=28:co=7:gosub40:next
 
-rem ... stairs will wait
-rem 7810 gosub50:ch=233:co=0:gosub40
+rem ... and stairs, if this is that room
+
+6310 ifdr=rsthengosub60:ch=233:co=0:gosub40
 
 6390 return
 
@@ -287,6 +289,10 @@ rem ... place hero
 7410 x=int(rnd(1)*20)+2:y=int(rnd(1)*20)+2:gosub20
 7420 ifth<>32then7410
 7430 hx=x:hy=y:ch=81:co=6:gosub40
+
+rem ... and pick which room has the stairs
+
+7600 rs=int(rnd(1)*5)
 
 7900 return
 
