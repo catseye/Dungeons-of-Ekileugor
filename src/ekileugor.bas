@@ -15,7 +15,7 @@ rem sb        : status bar mode
 rem mu        : message-up flag
 
 rem hx,hy     : hero's position
-rem m         : number of monsters
+rem mm        : max number of monsters (constant, minus one)
 rem mn        : current monster number
 rem m%(#,p)   : monster matrix: first dimension is mn, second is:
 rem           :   0 = x position
@@ -37,8 +37,8 @@ rem dl        : dungeon level
 rem r%(#,p)   : room matrix: first dimension is room number, second:
 rem           :   0 = room x (nw corner)
 rem           :   1 = room y (nw corner)
-rem           :   2 = room width
-rem           :   3 = room height
+rem           :   2 = room width minus one
+rem           :   3 = room height minus one
 rem dr        : destination room during dungeon level creation & revealing
 
 10 gosub 8000:goto 100
@@ -57,11 +57,7 @@ rem write char ch with color co at x,y
 
 40 o=y*22+x:pokesc+o,ch:pokecm+o,co:return
 
-rem get random unoccupied x,y
-
-50 x=int(rnd(1)*20)+2:y=int(rnd(1)*20)+2:dx=0:dy=0:gosub20
-51 ifth<>32then50
-52 return
+rem get random unoccupied x,y in room dr
 
 60 x=int(rnd(1)*(r%(dr,2)+1))+r%(dr,0):y=int(rnd(1)*(r%(dr,3)+1))+r%(dr,1)
 61 dx=0:dy=0:gosub20:ifth<>32then60
@@ -82,7 +78,7 @@ rem main loop
 
 rem monsters move
 
-400 for mn = 1 to m
+400 formn=0tomm
 405 ifm%(mn,3)<=0then490
 410 x=m%(mn,0):y=m%(mn,1):dx=sgn(hx-x):dy=sgn(hy-y)
 420 gosub 20
@@ -109,9 +105,9 @@ rem hero can (and does) move
 rem hero attack monster!
 rem ... first, find monster
 
-700 mn=1
+700 mn=0
 705 ifm%(mn,0)=hx+dxandm%(mn,1)=hy+dythen720
-710 mn=mn+1:ifmn<=mthen705
+710 mn=mn+1:ifmn<=mmthen705
 
 rem ... SOMETHING IS WRONG.
 
@@ -199,20 +195,28 @@ rem populate room dr
 rem ... here thar be monsters
 rem ... (TODO: allocate monsters properly in m% array)
 
-6500 m=int(rnd(1)*4)
-6510 fori=1tom
-6520 gosub60:ch=19:co=2:gosub40
-rem 7525 m%(i,0)=x:m%(i,1)=y:m%(i,2)=19:m%(i,3)=rnd(1)*6+1
-6530 next
+6200 m=int(rnd(1)*4)
+6210 forj=1tom
+6220 gosub60:gosub6500
+6230 next
 
 rem ... and gold
 
-6900 j=int(rnd(1)*3):fori=1toj:gosub60:ch=28:co=7:gosub40:next
+6300 j=int(rnd(1)*3):fori=1toj:gosub60:ch=28:co=7:gosub40:next
 
 rem ... stairs will wait
 rem 7810 gosub50:ch=233:co=0:gosub40
 
-6990 return
+6390 return
+
+rem allocate monster at x,y
+
+6500 mn=-1:fori=0tomm:ifm%(i,3)=0thenmn=i:i=10
+6510 next
+6520 ifmn=-1thenreturn
+6530 m%(mn,0)=x:m%(mn,1)=y:m%(mn,2)=19:m%(mn,3)=rnd(1)*6+1
+6540 ch=19:co=2:gosub40
+6550 return
 
 rem init level
 
@@ -281,14 +285,19 @@ rem ... now shadow in the rooms
 7325 next
 7327 next
 
-7820 gosub50:hx=x:hy=y:ch=81:co=6:gosub40
+rem ... place hero
+
+7400 dx=0:dy=0
+7410 x=int(rnd(1)*20)+2:y=int(rnd(1)*20)+2:gosub20
+7420 ifth<>32then7410
+7430 hx=x:hy=y:ch=81:co=6:gosub40
 
 7900 return
 
 rem init
 
 8000 dim m%(10,5),r%(4,4)
-8005 sg=10:in=11:de=12:mh=31:hp=mh:au=0:pt=0:dl=1
+8005 sg=10:in=11:de=12:mh=31:hp=mh:au=0:pt=0:dl=1:mm=10
 8010 sc=7680:cm=38400:sb=0:mu=0
 8012 print"{clr}"
 8015 m$="hit any key to begin":gosub4000:gosub4000
@@ -299,5 +308,5 @@ rem died
 
 9000 m$="you have died":gosub4000
 9010 m$="on dungeon level"+str$(dl):gosub4000
-9020 m$="with"+str$(au)+"gold":gosub4000:gosub4000
+9020 m$="with"+str$(au)+" gold":gosub4000:gosub4000
 9030 print "{clr}"
