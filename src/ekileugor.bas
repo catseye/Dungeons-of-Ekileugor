@@ -145,8 +145,14 @@ rem status
 1002 print"{home}{blk}{rvs on} ";
 1005 ifsb=0thenprint"hp"hp"{left} /"mh"{left} ";
 1010 ifsb=1thenprint"gold"au"{left} ";
+
+#ifdef FULL
+
 1012 ifsb=2thenprint"potion"pt"{left} ";
 1015 ifsb=3thenprint"str"sg"{left} int"in"{left} dex"de"{left} ";
+
+#endif
+
 1085 fori=pos(0)to21:print" ";:next
 1090 print"{rvs off}";:return
 
