@@ -237,68 +237,78 @@ rem ... first clear the screen
 
 rem ... then make some rooms
 rem ... (this part isn't as clever as it should be)
-rem ... (TODO should ensure non-overlapping)
 
 7100 fori=0to4
 7110 r%(i,2)=int(rnd(1)*6)+3:r%(i,3)=int(rnd(1)*6)+3
 7120 r%(i,0)=int(rnd(1)*(20-r%(i,2)))+2:r%(i,1)=int(rnd(1)*(20-r%(i,3)))+2
 
-rem ... now, for each room i > 0,
+rem ... if this is the first room, no checking or tunnel is needed.
 
-7180 ifi=0then7290
+7130 ifi=0then7490
 
-rem ... pick a room dr < i,
+rem ... check that room does not overlap other rooms (TODO)
 
-7190 dr=int(rnd(1)*i)
+7140 forj=0toi-1
 
-rem ... and draw a tunnel to it, as follows:
+rem        ; If bb[x].left > bb[y].right, they do not overlap.
+rem        ; If bb[y].left > bb[x].right, they do not overlap.
+rem        ; If bb[x].top > bb[y].bottom, they do not overlap.
+rem        ; If bb[y].top > bb[x].botom, they do not overlap.
+rem        ; Otherwise, they overlap.
+
+7150 next
+
+rem ... now draw a tunnel.  pick a room dr < i,
+
+7400 dr=int(rnd(1)*i)
+
 rem ... pick a random location on room i's north wall
 
-7200 rx=int(rnd(1)*r%(i,2))+r%(i,0)
+7405 rx=int(rnd(1)*r%(i,2))+r%(i,0)
 
 rem ... pick a random location on room dr's west wall
 
-7210 ry=int(rnd(1)*r%(dr,3))+r%(dr,1)
+7410 ry=int(rnd(1)*r%(dr,3))+r%(dr,1)
 
 rem ... tunnel north or south as appropriate...
 
-7220 x=rx:y=r%(i,1)
+7420 x=rx:y=r%(i,1)
 
 rem 7230 ch=14:co=4:gosub40
-7230 gosub30
-7240 ify<>rytheny=y+sgn(ry-y):goto7230
+7430 gosub30
+7440 ify<>rytheny=y+sgn(ry-y):goto7430
 
 rem ... tunnel east or west as appropriate.
 
 rem ch=5:co=5:gosub40
-7250 gosub30
-7260 ifx<>r%(dr,0)thenx=x+sgn(r%(dr,0)-x):goto7250
+7450 gosub30
+7460 ifx<>r%(dr,0)thenx=x+sgn(r%(dr,0)-x):goto7450
 
 rem ... tunnel complete.  (next room, please)
 
-7290 next
+7490 next
 
 rem ... now shadow in the rooms
 
-7300 co=0:ch=102
-7302 fori=0to4
-7305 forx=r%(i,0)tor%(i,0)+r%(i,2)
-7310 fory=r%(i,1)tor%(i,1)+r%(i,3)
-7315 gosub40
-7320 next
-7325 next
-7327 next
+7500 co=0:ch=102
+7502 fori=0to4
+7505 forx=r%(i,0)tor%(i,0)+r%(i,2)
+7510 fory=r%(i,1)tor%(i,1)+r%(i,3)
+7515 gosub40
+7520 next
+7525 next
+7527 next
 
 rem ... and pick which room has the stairs
 
-7340 rs=int(rnd(1)*5)
+7900 rs=int(rnd(1)*5)
 
 rem ... place hero.  pick a room and reveal it.  then put him in it, dammit.
 
-7400 dr=int(rnd(1)*5):gosub6100:gosub60
-7410 hx=x:hy=y:ch=81:co=6:gosub40
+7910 dr=int(rnd(1)*5):gosub6100:gosub60
+7920 hx=x:hy=y:ch=81:co=6:gosub40
 
-7900 return
+7995 return
 
 rem init
 
