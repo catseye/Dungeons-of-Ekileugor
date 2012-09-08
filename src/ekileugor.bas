@@ -41,7 +41,7 @@ rem           :   2 = room width minus one
 rem           :   3 = room height minus one
 rem dr        : destination room during dungeon level creation & revealing
 
-10 gosub 8000:goto 100
+10 gosub 8000:goto100
 
 rem short, frequently-called routines
 
@@ -65,31 +65,31 @@ rem get random unoccupied x,y in room dr
 
 rem main loop
 
-100 gosub 1000:mu=0
+100 gosub1000:mu=0
 102 dx=0:dy=0
 105 getk$:if k$=""then105
-110 if k$="i" then dy=-1:goto 500
-120 if k$="j" then dx=-1:goto 500
-130 if k$="k" then dy=1:goto 500
-140 if k$="l" then dx=1:goto 500
-150 if k$="{f1}"thensb=sb+1:gosub1100
-160 if k$="r"then400
-180 goto 100
+110 ifk$="i"thendy=-1:goto 500
+120 ifk$="j"thendx=-1:goto 500
+130 ifk$="k"thendy=1:goto 500
+140 ifk$="l"thendx=1:goto 500
+150 ifk$="{f1}"thensb=sb+1:gosub1100
+160 ifk$="r"then400
+180 goto100
 
 rem monsters move
 
 400 formn=0tomm
 405 ifm%(mn,3)<=0then490
 410 x=m%(mn,0):y=m%(mn,1):dx=sgn(hx-x):dy=sgn(hy-y)
-420 gosub 20
-430 if th=81thengosub800
-455 if th<>32then490
-460 gosub 30
+420 gosub20
+430 ifth=81thengosub800
+455 ifth<>32then490
+460 gosub30
 470 x=x+dx:y=y+dy:ch=19:co=2:gosub40
 480 m%(mn,0)=x:m%(mn,1)=y
 490 next
 
-499 goto 100
+499 goto100
 
 rem hero can (and does) move
 
@@ -115,7 +115,7 @@ rem ... SOMETHING IS WRONG.
 
 rem ... see if hit. simple for now.
 
-720 if int(rnd(1)*6)<3 then 730
+720 ifint(rnd(1)*6)<3then730
 725 m$="you miss":gosub4000:return
 730 dm=int(rnd(1)*6)+1
 735 m$="you hit for"+str$(dm):gosub4000
@@ -129,12 +129,12 @@ rem ... see if hit. simple for now.
 
 rem monster attack hero!
 
-800 if int(rnd(1)*6)<2 then 830
+800 ifint(rnd(1)*6)<2then830
 820 m$="snake misses":gosub4000:return
 830 dm=int(rnd(1)*4)+1
 835 m$="snake hits for"+str$(dm):gosub4000
 840 hp=hp-dm:ifhp>0thenreturn
-850 goto 9000
+850 goto9000
 
 rem status
 
@@ -158,12 +158,11 @@ rem display message
 4000 ifmu<>0thengosub4100
 4010 print"{home}{blk}{rvs on} ";m$;
 4020 fori=pos(0)to21:print" ";:next
-4030 mu=1
-4040 return
+4030 mu=1:return
 
 rem wait for keypress
 
-4100 print "{home}Z";
+4100 print"{home}Z";
 4102 getkk$:ifkk$=""thendr=rnd(1):goto4102
 4104 return
 
@@ -177,10 +176,7 @@ rem figure out which room x+dx,y+dy is in
 6050 dr=i:i=4
 6070 next
 
-rem ... SOMETHING IS WRONG.
-
-6080 ifdr=-1thenstop
-
+rem ... if dr still=-1, SOMETHING IS WRONG, it will crash below.
 rem ... reveal room dr
 
 6100 co=0:ch=32
@@ -196,9 +192,7 @@ rem ... here thar be monsters
 rem ... (TODO: allocate monsters properly in m% array)
 
 6200 m=int(rnd(1)*4)
-6210 forj=1tom
-6220 gosub60:gosub6500
-6230 next
+6210 forj=1tom:gosub60:gosub6500:next
 
 rem ... and gold
 
@@ -232,12 +226,11 @@ rem ... first clear the screen
 
 rem ... then make some rooms
 rem ... (this part isn't as clever as it should be)
-rem ... (TODO should compute width/hieght first)
 rem ... (TODO should ensure non-overlapping)
 
 7100 fori=0to4
-7110 r%(i,0)=int(rnd(1)*15)+2:r%(i,1)=int(rnd(1)*15)+2
-7120 r%(i,2)=int(rnd(1)*5)+1:r%(i,3)=int(rnd(1)*5)+1
+7110 r%(i,2)=int(rnd(1)*6)+3:r%(i,3)=int(rnd(1)*6)+3
+7120 r%(i,0)=int(rnd(1)*(20-r%(i,2)))+2:r%(i,1)=int(rnd(1)*(20-r%(i,3)))+2
 
 rem ... now, for each room i > 0,
 
@@ -296,8 +289,8 @@ rem ... place hero
 
 rem init
 
-8000 dim m%(10,5),r%(4,4)
-8005 sg=10:in=11:de=12:mh=31:hp=mh:au=0:pt=0:dl=1:mm=10
+8000 dim m%(9,3),r%(4,3)
+8005 sg=10:in=11:de=12:mh=31:hp=mh:au=0:pt=0:dl=1:mm=9
 8010 sc=7680:cm=38400:sb=0:mu=0
 8012 print"{clr}"
 8015 m$="hit any key to begin":gosub4000:gosub4000
