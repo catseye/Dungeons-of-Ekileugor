@@ -128,7 +128,7 @@ rem ... see if hit. simple for now.
 
 rem monster attack hero!
 
-800 mv=-1:ifint(rnd(1)*6)<2then830
+800 mv=-1:ifrnd(1)*(7-dl/2)<2then830
 820 m$="snake misses":gosub4000:return
 830 dm=int(rnd(1)*4)+1:mv=dm
 835 m$="snake hits for":gosub4000
@@ -139,20 +139,17 @@ rem status
 
 1000 ifmu<>0thenreturn
 1010 print"{home}{blk}{rvs on}"hp"{left}/"mh"{left},"dl"{left},"au"{left} ";
+
+rem ... this is also an entry point
+
 1020 fori=pos(0)to21:print" ";:next:return
-
-rem erase status
-
-1100 print"{home}{blk}{rvs on}                      ";
-1110 return
 
 rem display message
 
 4000 ifmu<>0thengosub4100
 4010 print"{home}{blk}{rvs on} "m$;
 4015 ifmv>0thenprintmv"{left} ";
-4020 fori=pos(0)to21:print" ";:next
-4030 mu=1:return
+4020 gosub1020:mu=1:return
 
 rem wait for keypress
 

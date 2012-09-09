@@ -10,6 +10,7 @@ a respectable subset of the usual "dungeon furniture":
 *   levels populated with monsters, treasure, and stairwells
 *   combat and hit points
 *   queued status messages
+*   progressively more difficult dungeon levels
 *   whatever else I can squeeze in: see TODO, below.
 
 Dungeons of Ekileugor is written in BASIC.  It makes use of colour and the
@@ -63,7 +64,6 @@ TODO
 
 *   Health potions instead of resting to regain HP
 *   Smarter monster movement (not blocked so easily)
-*   Progressively harder (on lower levels, snakes hit more frequently)
 *   Possibility of 0 snakes or gold or potions in a room
 
 Discussion
