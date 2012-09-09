@@ -9,6 +9,7 @@ a respectable subset of the usual "dungeon furniture":
 *   the contents of rooms are not visible until entered
 *   levels populated with monsters, treasure, potions, traps, and stairwells
 *   monsters persue the hero and engage in combat with hit points
+*   experience points for victory in combat, experience levels
 *   queued status messages
 *   progressively more difficult dungeon levels
 *   whatever else I can squeeze in: see TODO, below.
@@ -52,10 +53,11 @@ You will also notice that the game ends rather abruptly when you die.  If
 you would like to see your final score (to see if you have beaten your
 personal record, for example), after the game ends, type:
 
-    ?au,dl
+    ?au,dl,xl
 
-This will display the amount of gold you accumulated, and the dungeon level
-you died on.
+This will display the amount of gold you accumulated, the dungeon level
+you died on, the experience points you accumulated, and the experience level
+you achieved.
 
 Building
 --------
@@ -75,9 +77,9 @@ Run `MINI=yes make.sh` to build the MINI version of the game.
 TODO
 ----
 
-*   Potions should have more effect on deeper levels
+*   Potions should have more effect on deeper levels (yes, do this)
 *   Snakes should not hit as frequently on shallower levels
-*   Maybe armor or weapon +1's, or experience points/levels
+*   Experience level should increase your ability to hit/damage?
 
 Discussion
 ----------
@@ -90,8 +92,7 @@ materializes) which will require at least 3K memory expansion:
 *   more than one kind of monster
 *   character generation with three stats (strength, intelligence, and
     dexterity)
-*   experience points and experience levels
-*   multiple weapons and armor (although not a real inventory)
+*   multiple weapons and armor (although probably not a real inventory)
 *   chests and secret doors
 
 At one point the plan was to generate MINI and FULL versions of the game

@@ -28,6 +28,9 @@ rem hp        : hit points
 rem mh        : max hit points
 rem au        : gold
 rem dl        : dungeon level
+rem xp        : experience points
+rem xg        : experience goal for next level
+rem xl        : experience level
 
 rem r%(#,p)   : room matrix: first dimension is room number, second:
 rem           :   0 = room x (nw corner)
@@ -37,7 +40,7 @@ rem           :   3 = room height minus one
 rem dr        : destination room during dungeon level creation & revealing
 rem rs        : room with stairs (picked during level creation)
 
-10 gosub 8000:goto100
+1 dimm%(7,2),r%(4,3):sc=7680:cm=38400:mh=19:xg=10:hp=mh:dl=1:print"{clr}":gosub7000:goto100
 
 rem short, frequently-called routines
 
@@ -114,7 +117,8 @@ rem ... see if hit. simple for now.
 725 m$="you miss":gosub4000:return
 730 dm=int(rnd(1)*6)+1:mv=dm
 735 m$="you hit for":gosub4000
-740 m%(mn,2)=m%(mn,2)-dm
+740 m%(mn,2)=m%(mn,2)-dm:xp=xp+int(rnd(1)*3)*dl+1
+743 ifxp>xgthenxl=xl+1:xg=xg*2:mh=mh+int(rnd(1)*8)+2:hp=mh:m$="gain exp,level":mv=xl:gosub4000:goto743
 745 ifm%(mn,2)>0thenreturn
 750 mv=-1:m$="you killed snake":gosub4000
 760 x=m%(mn,0):y=m%(mn,1):gosub30
@@ -276,11 +280,4 @@ rem ... place hero.  pick a room and reveal it.  then put him in it, dammit.
 
 7910 dr=int(rnd(1)*5):gosub6100:gosub60
 7920 hx=x:hy=y:c=81:co=6:gosub40
-
 7995 return
-
-rem init
-
-8000 dimm%(7,2),r%(4,3)
-rem ... tail call!
-8005 sc=7680:cm=38400:mh=31:hp=mh:dl=1:print"{clr}":goto7000
