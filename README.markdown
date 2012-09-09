@@ -7,7 +7,8 @@ a respectable subset of the usual "dungeon furniture":
 
 *   random generation of reasonable dungeon levels, with rooms and passages
 *   the contents of rooms are not visible until entered
-*   levels populated with monsters, treasure, potions, traps, and stairwells
+*   levels populated with monsters, treasure, potions, chests, traps, and
+    stairwells
 *   monsters persue the hero and engage in combat with hit points
 *   health potions can be collected and quaffed later
 *   experience points for victory in combat, experience levels
@@ -15,9 +16,9 @@ a respectable subset of the usual "dungeon furniture":
 *   progressively more difficult dungeon levels
 *   whatever else I can squeeze in: see TODO, below.
 
-Dungeons of Ekileugor is written in BASIC.  It makes use of colour and the
-Commodore graphics characters, but not of sound effects or a custom character
-set.
+Dungeons of Ekileugor is written in Commodore BASIC 2.0.  It makes use of
+colour and the Commodore graphics characters, but not of sound effects or a
+custom character set.
 
 Playing the Game
 ----------------
@@ -85,8 +86,7 @@ Run `MINI=yes make.sh` to build the MINI version of the game.
 TODO
 ----
 
-*   Experience level should increase your ability to hit/damage?
-*   Announce gold or health potion picked up
+*   Announce quaff
 
 Discussion
 ----------
@@ -100,7 +100,7 @@ materializes) which will require at least 3K memory expansion:
 *   character generation with three stats (strength, intelligence, and
     dexterity)
 *   multiple weapons and armor (although probably not a real inventory)
-*   chests and secret doors
+*   detecting traps and secret doors
 
 At one point the plan was to generate MINI and FULL versions of the game
 from the same program source, but this soon began to seem like a fool's

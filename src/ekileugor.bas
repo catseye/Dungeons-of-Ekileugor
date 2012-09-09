@@ -94,11 +94,12 @@ rem monsters move
 rem hero can (and does) move
 
 500 x=hx:y=hy:gosub5:ifc=19thengosub700:goto400
-520 ifc=28thenau=au+int(fnr(20)*(1+(dl/5)))+1:c=32
-530 ifc=65thenpt=pt+1:c=32
+520 ifc=28thenmv=int(fnr(20)*(1+(dl/5)))+1:au=au+mv:m$="gold:":gosub800:c=32
+530 ifc=65thenmv=-1:m$="potion":gosub800:pt=pt+1:c=32
 540 ifc=233thendl=dl+1:gosub7000:goto10
 550 ifc=102thengosub6000:goto500
 560 ifc=86thenm$="dart trap!":gosub640:c=32
+565 ifc=98then670
 570 ifc<>32then400
 580 gosub6:x=x+dx:y=y+dy:c=81:co=6:gosub7:hx=x:hy=y
 585 ifhp>mhthenhp=mh
@@ -118,6 +119,13 @@ rem ... also an entry point (trap)
 rem ... died
 
 660 print"{clr}":end
+
+rem chest
+
+670 i=rnd(1):ifi<.2thenc=86:goto560
+672 ifi<.5thenm$="locked":mv=-1:gosub800:goto400
+674 ifi>.9thenc=65:goto530
+676 c=28:goto520
 
 rem hero attack monster!
 rem ... first, find monster
@@ -186,11 +194,12 @@ rem ... here thar be monsters
 
 6200 m=fnr(4):ifm>0thenforj=1tom:gosub8:gosub6500:next
 
-rem ... and gold and traps and potions
+rem ... and gold and traps and potions and chests
 
 6300 j=fnr(3):ifj>0thenfori=1toj:gosub8:c=28:co=7:gosub7:next
 6302 ifrnd(1)>.3thengosub8:c=86:co=1:gosub7
 6304 ifrnd(1)>.5thengosub8:c=65:co=4:gosub7
+6306 ifr%(dr,2)>2andrnd(1)>.6thengosub8:c=98:co=2:gosub7
 
 rem ... and stairs, if this is that room
 
