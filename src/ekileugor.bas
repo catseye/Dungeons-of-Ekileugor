@@ -1,6 +1,7 @@
 rem dungeons of ekileugor
+rem conceived august 2012, chris pressey, cat's eye technologies
 
-rem i         : temporary (loops)
+rem i,j       : temporaries (loops)
 
 rem x,y       : temporary position (used by all)
 rem dx,dy     : delta for move (used by all)
@@ -60,8 +61,7 @@ rem get random unoccupied x,y in room dr
 
 rem main loop
 
-100 gosub1000:mu=0
-102 dx=0:dy=0
+100 gosub900:mu=0:dx=0:dy=0
 105 getk$:if k$=""then105
 110 ifk$="i"thendy=-1:goto 500
 120 ifk$="j"thendx=-1:goto 500
@@ -75,18 +75,14 @@ rem monsters move
 400 formn=0to7
 405 ifm%(mn,2)<=0then490
 410 x=m%(mn,0):y=m%(mn,1):dx=sgn(hx-x):dy=sgn(hy-y)
-420 gosub20
-430 ifc=81thengosub800:goto490
-435 ifc=32orc=86then460
+420 gosub20:ifc=81thengosub800:goto490
+430 ifc=32orc=86then460
 440 ifrnd(1)<.3thendx=0:goto420
 450 ifrnd(1)<.3thendy=0:goto420
 455 goto490
-460 gosub30
-470 x=x+dx:y=y+dy:c=19:co=2:gosub40
+460 gosub30:x=x+dx:y=y+dy:c=19:co=2:gosub40
 480 m%(mn,0)=x:m%(mn,1)=y
-490 next
-
-499 goto100
+490 next:goto100
 
 rem hero can (and does) move
 
@@ -123,8 +119,7 @@ rem ... see if hit. simple for now.
 750 mv=-1:m$="you killed snake":gosub4000
 760 x=m%(mn,0):y=m%(mn,1):gosub30
 765 m%(mn,0)=-1:m%(mn,1)=-1:m%(mn,2)=0
-780 x=hx:y=hy
-790 return
+780 x=hx:y=hy:return
 
 rem monster attack hero!
 
@@ -140,19 +135,19 @@ rem ... also an entry point (trap)
 
 rem status
 
-1000 ifmu<>0thenreturn
-1010 print"{home}{blk}{rvs on}"hp"{left}/"mh"{left},"dl"{left},"au"{left} ";
+900 ifmu<>0thenreturn
+910 print"{home}{blk}{rvs on}"hp"{left}/"mh"{left},"dl"{left},"au"{left} ";
 
 rem ... this is also an entry point
 
-1020 fori=pos(0)to21:print" ";:next:return
+920 fori=pos(0)to21:print" ";:next:return
 
 rem display message
 
 4000 ifmu<>0thengosub4100
 4010 print"{home}{blk}{rvs on} "m$;
 4015 ifmv>0thenprintmv"{left} ";
-4020 gosub1020:mu=1:return
+4020 gosub920:mu=1:return
 
 rem wait for keypress
 
