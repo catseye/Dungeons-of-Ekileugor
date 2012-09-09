@@ -26,12 +26,6 @@ rem           :   3 = monster hp
 
 rem dm        : damage done during combat
 
-#ifdef FULL
-rem sg        : strength
-rem in        : intelligence
-rem de        : dexterity
-rem pt        : health potions
-#endif
 rem hp        : hit points
 rem mh        : max hit points
 rem au        : gold
@@ -44,12 +38,6 @@ rem           :   2 = room width minus one
 rem           :   3 = room height minus one
 rem dr        : destination room during dungeon level creation & revealing
 rem rs        : room with stairs (picked during level creation)
-
-#ifdef FULL
-[max_monsters]=10
-#else
-[max_monsters]=7
-#endif
 
 10 gosub 8000:goto100
 
@@ -92,7 +80,7 @@ rem rest
 
 rem monsters move
 
-400 formn=0to[max_monsters]
+400 formn=0to7
 405 ifm%(mn,3)<=0then490
 410 x=m%(mn,0):y=m%(mn,1):dx=sgn(hx-x):dy=sgn(hy-y)
 420 gosub20
@@ -121,7 +109,7 @@ rem ... first, find monster
 
 700 mn=0
 705 ifm%(mn,0)=hx+dxandm%(mn,1)=hy+dythen720
-710 mn=mn+1:ifmn<=[max_monsters]then705
+710 mn=mn+1:ifmn<=7then705
 
 rem ... SOMETHING IS WRONG.
 
@@ -158,23 +146,13 @@ rem status
 1002 print"{home}{blk}{rvs on} ";
 1005 ifsb=0thenprint"hp"hp"{left} /"mh"{left} ";
 1010 ifsb=1thenprint"gold"au"{left} ";
-
-#ifdef FULL
-1012 ifsb=2thenprint"potion"pt"{left} ";
-1015 ifsb=3thenprint"str"sg"{left} int"in"{left} dex"de"{left} ";
-#endif
-
 1085 fori=pos(0)to21:print" ";:next
 1090 print"{rvs off}";:return
 
 rem erase status
 
 1100 print"{home}{blk}{rvs on}                      ";
-#ifdef FULL
-1105 ifsb>3thensb=0
-#else
 1105 ifsb>1thensb=0
-#endif
 1110 return
 
 rem display message
@@ -231,7 +209,7 @@ rem ... and stairs, if this is that room
 
 rem allocate monster at x,y
 
-6500 mn=-1:fori=0to[max_monsters]:ifm%(i,3)=0thenmn=i:i=10
+6500 mn=-1:fori=0to7:ifm%(i,3)=0thenmn=i:i=10
 6510 next
 6520 ifmn=-1thenreturn
 6530 m%(mn,0)=x:m%(mn,1)=y:m%(mn,2)=19:m%(mn,3)=rnd(1)*6+1
@@ -252,7 +230,7 @@ rem ... first clear the screen
 
 rem ... clear the monster table
 
-7060 fori=0to[max_monsters]:m%(i,3)=0:next
+7060 fori=0to7:m%(i,3)=0:next
 
 rem ... then make some rooms
 
@@ -265,8 +243,6 @@ rem ... if this is the first room, no checking or tunnel is needed.
 
 7130 ifi=0then7490
 
-#ifdef FULL
-
 rem ... check that room does not overlap other rooms
 
 7140 ol%=0:forj=0toi-1
@@ -277,8 +253,6 @@ rem ... check that room does not overlap other rooms
 7190 ol%=1:j=i
 7295 next
 7300 ifol%=1then7110
-
-#endif
 
 rem ... now draw a tunnel.  pick a room dr < i,
 
@@ -334,23 +308,15 @@ rem ... place hero.  pick a room and reveal it.  then put him in it, dammit.
 
 rem init
 
-8000 dimm%([max_monsters],3),r%(4,3)
+8000 dimm%(7,3),r%(4,3)
 8005 sc=7680:cm=38400:mh=31:hp=mh:dl=1
-#ifdef FULL
-8010 sg=10:in=11:de=12
-#endif
 8012 print"{clr}"
 8015 m$="hit any key to begin":gosub4000:gosub4000
+
 rem ... tricky! tricky! tail call!
+
 8020 goto7000
 
 rem died
 
-#ifdef FULL
-9000 m$="you have died":mv=-1:gosub4000
-9010 m$="on dungeon level":mv=dl:gosub4000
-9020 m$="with gold":mv=au:gosub4000:gosub4000
-9030 print"{clr}"
-#else
 9000 gosub4000:print"{clr}level"dl"gold"au
-#endif

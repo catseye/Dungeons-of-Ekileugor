@@ -1,46 +1,21 @@
 Dungeons of Ekileugor
 =====================
 
-_Dungeons of Ekileugor_ is a little roguelike game for the Commodore VIC-20.
+_Dungeons of Ekileugor_ is a little roguelike game for the *unexpanded*
+Commodore VIC-20.  Despite the limitations of this architecture, it supports
+a respectable subset of the usual "dungeon furniture":
 
-Despite the limitations of this architecture, its goal is to support a
-relatively rich set of "dungeon furniture", listed below.
-
-There are actually two versions of the game; a FULL version, which requires
-some amount of memory expansion, and a MINI version, which runs on an
-unexpanded VIC-20.  With the MINI version, you get:
-
-*   random generation of somewhat reasonable dungeon levels, with rooms and
-    passages
+*   random generation of reasonable dungeon levels, with rooms and passages
 *   the contents of rooms are not visible until entered
 *   levels populated with monsters, treasure, and stairwells
-*   (possibly a tiny bit more, if I can squeeze it in)
+*   combat and hit points
+*   queued status messages
+*   (whatever else I can squeeze in:
+    possibly progressively more difficult dungeon levels)
 
-With the FULL version, you get:
-
-*   more reasonable dungeon level generation
-
-And you may one day get:
-
-*   progressively more difficult dungeon levels
-*   more than one kind of monster
-*   character generation with three stats (strength, intelligence, and
-    dexterity) and hit points
-*   experience points and experience levels
-*   multiple weapons and armor (although not a real inventory)
-*   chests and traps
-*   some kind of magic items, possibly potions
-
-Colour and the Commodore graphics characters are used, but no sound effects
-or custom character set is planned.
-
-The game is written in BASIC.  It's possible some routines coded in 6502
-assembly language, using the Ophis 2.0 assembler, will be added at some
-point.
-
-I'm using the [VICE][] VIC-20 emulator to test it.
-
-It's not unlikely that I will never finish this project.
+Dungeons of Ekileugor is written in BASIC.  It makes use of colour and the
+Commodore graphics characters, but not of sound effects or a custom character
+set.
 
 Playing the Game
 ----------------
@@ -73,12 +48,47 @@ Building
 To build the `PRG` file from the `BAS` file, run `make.sh`.  The following
 tools are required:
 
-*   `cpp` from any C compiler distribution, e.g. `gcc`
 *   `yucca` from the [yucca distribution][]
-*   `petcat` from the VICE distribution
+*   `petcat` from the [VICE][] distribution
 
 Run `make.sh test` to start the game in `xvic` immediately after building.
 Run `MINI=yes make.sh` to build the MINI version of the game.
 
 [yucca distribution]: http://catseye.tc/projects/yucca/
 [VICE]: http://vice-emu.sourceforge.net/
+
+TODO
+----
+
+*   `?FRE(0)` after dying shows 52 bytes free -- not a lot.
+*   Health potions instead of resting to regain HP
+*   Smarter monster movement (not blocked so easily)
+*   Progressively harder (on lower levels, snakes hit more frequently)
+*   Possibility of 0 snakes or gold or potions in a room
+
+Discussion
+----------
+
+There are some things you might expect from a roguelike that you won't find
+in Dungeons of Elikeugor, due to the limitations of the unexpanded VIC;
+you'll have to wait for _Dungeons of Ekileugor II_ (assuming it ever
+materializes) which will require at least 3K memory expansion:
+
+*   more than one kind of monster
+*   character generation with three stats (strength, intelligence, and
+    dexterity)
+*   experience points and experience levels
+*   multiple weapons and armor (although not a real inventory)
+*   chests and traps
+*   some kind of magic items, possibly potions
+
+At one point the plan was to generate MINI and FULL versions of the game
+from the same program source, but this soon began to seem like a fool's
+errand; testing that the MINI version still works on an unexpanded VIC after
+adding features for the FULL version was tricky and cumbersome.  Since the
+MINI version was what was the more impressive, and hardly large enough to
+justify the sharing of a code base with another version of the program, I
+decided to concentrate on it, and save the FULL version for some potentially
+mythical sequel.
+
+Really, this project was mostly started just to use the title "Ekileugor".
