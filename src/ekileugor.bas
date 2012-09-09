@@ -114,7 +114,9 @@ rem ... first, find monster
 
 rem ... SOMETHING IS WRONG.
 
+#ifdef DEBUG
 715 stop
+#endif
 
 rem ... see if hit. simple for now.
 
@@ -235,28 +237,35 @@ rem ... first clear the screen
 7050 co=0:ch=160:y=21:forx=0to21:gosub40:next
 7055 y=22:forx=0to21:gosub40:next
 
+rem ... clear the monster table
+
+7060 fori=0tomm:m%(i,3)=0:next
+
 rem ... then make some rooms
 rem ... (this part isn't as clever as it should be)
 
 7100 fori=0to4
 7110 r%(i,2)=int(rnd(1)*6)+3:r%(i,3)=int(rnd(1)*6)+3
-7120 r%(i,0)=int(rnd(1)*(20-r%(i,2)))+2:r%(i,1)=int(rnd(1)*(20-r%(i,3)))+2
+7120 r%(i,0)=int(rnd(1)*(20-r%(i,2)))+1:r%(i,1)=int(rnd(1)*(20-r%(i,3)))+1
 
 rem ... if this is the first room, no checking or tunnel is needed.
 
 7130 ifi=0then7490
 
-rem ... check that room does not overlap other rooms (TODO)
+#ifdef FULL
 
-7140 forj=0toi-1
+rem ... check that room does not overlap other rooms
 
-rem        ; If bb[x].left > bb[y].right, they do not overlap.
-rem        ; If bb[y].left > bb[x].right, they do not overlap.
-rem        ; If bb[x].top > bb[y].bottom, they do not overlap.
-rem        ; If bb[y].top > bb[x].botom, they do not overlap.
-rem        ; Otherwise, they overlap.
+7140 ol%=0:forj=0toi-1
+7150 ifr%(i,0)>r%(j,0)+r%(j,2)then7295
+7160 ifr%(j,0)>r%(i,0)+r%(i,2)then7295
+7170 ifr%(i,1)>r%(j,1)+r%(j,3)then7295
+7180 ifr%(j,1)>r%(i,1)+r%(i,3)then7295
+7190 ol%=1:j=i
+7295 next
+7300 ifol%=1then7110
 
-7150 next
+#endif
 
 rem ... now draw a tunnel.  pick a room dr < i,
 
