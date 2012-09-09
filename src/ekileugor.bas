@@ -192,11 +192,10 @@ rem ... and stairs, if this is that room
 
 rem allocate monster at x,y
 
-6500 mn=-1:fori=0to7:ifm%(i,2)=0thenmn=i:i=10
-6510 next
-6520 ifmn=-1thenreturn
-6530 m%(mn,0)=x:m%(mn,1)=y:m%(mn,2)=rnd(1)*6+dl:c=19:co=2:gosub40
-6550 return
+6500 fori=0to7:ifm%(i,2)=0thengoto6530
+6510 next:return
+rem ... tail call!
+6530 m%(i,0)=x:m%(i,1)=y:m%(i,2)=rnd(1)*6+dl:c=19:co=2:goto40
 
 rem init level
 
