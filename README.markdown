@@ -7,8 +7,8 @@ a respectable subset of the usual "dungeon furniture":
 
 *   random generation of reasonable dungeon levels, with rooms and passages
 *   the contents of rooms are not visible until entered
-*   levels populated with monsters, treasure, and stairwells
-*   combat and hit points
+*   levels populated with monsters, treasure, potions, and stairwells
+*   monsters persue the hero and engage in combat with hit points
 *   queued status messages
 *   progressively more difficult dungeon levels
 *   whatever else I can squeeze in: see TODO, below.
@@ -62,8 +62,8 @@ Run `MINI=yes make.sh` to build the MINI version of the game.
 TODO
 ----
 
-*   Health potions instead of resting to regain HP
-*   Possibility of 0 snakes or gold or potions in a room
+*   Traps!
+*   Possibility of 0 snakes or gold or potions or traps in a room
 
 Discussion
 ----------
@@ -78,8 +78,7 @@ materializes) which will require at least 3K memory expansion:
     dexterity)
 *   experience points and experience levels
 *   multiple weapons and armor (although not a real inventory)
-*   chests and traps
-*   some kind of magic items, possibly potions
+*   chests and secret doors
 
 At one point the plan was to generate MINI and FULL versions of the game
 from the same program source, but this soon began to seem like a fool's

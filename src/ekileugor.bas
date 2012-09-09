@@ -67,12 +67,8 @@ rem main loop
 120 ifk$="j"thendx=-1:goto 500
 130 ifk$="k"thendy=1:goto 500
 140 ifk$="l"thendx=1:goto 500
-160 ifk$="r"then200
+160 ifk$="r"then400
 180 goto100
-
-rem rest
-
-200 ifhp<mhthenhp=hp+int(rnd(1)*1.15)
 
 rem monsters move
 
@@ -97,10 +93,12 @@ rem hero can (and does) move
 500 x=hx:y=hy:gosub 20
 510 ifc=19thengosub700:goto400
 520 ifc=28thenau=au+int(rnd(1)*20)+1:c=32
+523 ifc=65thenhp=hp+int(rnd(1)*6)+1:c=32
 525 ifc=233thendl=dl+1:gosub7000:goto100
 530 ifc=102thengosub6000:goto500
 570 ifc<>32then400
 580 gosub30:x=x+dx:y=y+dy:c=81:co=6:gosub40:hx=x:hy=y
+585 ifhp>mhthenhp=mh
 590 goto400
 
 rem hero attack monster!
@@ -183,9 +181,11 @@ rem ... (TODO: allocate monsters properly in m% array)
 6200 m=int(rnd(1)*4)
 6210 forj=1tom:gosub60:gosub6500:next
 
-rem ... and gold
+rem ... and gold and traps and potions
 
 6300 j=int(rnd(1)*3):fori=1toj:gosub60:c=28:co=7:gosub40:next
+rem 6302 j=int(rnd(1)*2):fori=1toj:gosub60:c=86:co=0:gosub40:next
+6304 j=int(rnd(1)*2):fori=1toj:gosub60:c=65:co=4:gosub40:next
 
 rem ... and stairs, if this is that room
 
