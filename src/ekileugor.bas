@@ -74,8 +74,9 @@ rem main loop
 14 ifk$="k"thendy=1:goto 500
 15 ifk$="l"thendx=1:goto 500
 16 ifk$="r"then400
-17 ifk$="q"andpt>0thenpt=pt-1:hp=hp+fnr(6)+2:goto400
+17 ifk$="q"andpt>0thenpt=pt-1:mv=fnr(6)+2:hp=hp+mv:m$="quaffed for":gosub800:goto19
 18 goto10
+19 ifhp>mhthenhp=mh
 
 rem monsters move
 
@@ -102,7 +103,6 @@ rem hero can (and does) move
 565 ifc=98then670
 570 ifc<>32then400
 580 gosub6:x=x+dx:y=y+dy:c=81:co=6:gosub7:hx=x:hy=y
-585 ifhp>mhthenhp=mh
 590 goto400
 
 rem monster attack hero!

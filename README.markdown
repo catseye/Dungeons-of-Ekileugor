@@ -83,11 +83,6 @@ Run `MINI=yes make.sh` to build the MINI version of the game.
 [yucca distribution]: http://catseye.tc/projects/yucca/
 [VICE]: http://vice-emu.sourceforge.net/
 
-TODO
-----
-
-*   Announce quaff
-
 Discussion
 ----------
 
