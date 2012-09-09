@@ -251,13 +251,11 @@ rem ... tunnel north or south as appropriate...
 
 7420 x=rx:y=r%(i,1)
 
-7430 gosub30
-7440 ify<>rytheny=y+sgn(ry-y):goto7430
+7430 gosub30:ify<>rytheny=y+sgn(ry-y):goto7430
 
 rem ... tunnel east or west as appropriate.
 
-7450 gosub30
-7460 ifx<>r%(dr,0)thenx=x+sgn(r%(dr,0)-x):goto7450
+7450 gosub30:ifx<>r%(dr,0)thenx=x+sgn(r%(dr,0)-x):goto7450
 
 rem ... tunnel complete.  (next room, please)
 
@@ -265,14 +263,10 @@ rem ... tunnel complete.  (next room, please)
 
 rem ... now shadow in the rooms
 
-7500 co=0:c=102
-7502 fori=0to4
+7500 co=0:c=102:fori=0to4
 7505 forx=r%(i,0)tor%(i,0)+r%(i,2)
 7510 fory=r%(i,1)tor%(i,1)+r%(i,3)
-7515 gosub40
-7520 next
-7525 next
-7527 next
+7515 gosub40:next:next:next
 
 rem ... and pick which room has the stairs
 
@@ -289,11 +283,8 @@ rem init
 
 8000 dimm%(7,2),r%(4,3)
 8005 sc=7680:cm=38400:mh=31:hp=mh:dl=1:print"{clr}"
-8015 m$="hit any key to begin":gosub4000:gosub4000
-
-rem ... tricky! tricky! tail call! ok, not *that* tricky.
-
-8020 goto7000
+rem ... tail call!
+8015 m$="hit any key to begin":gosub4000:gosub4000:goto7000
 
 rem died
 
