@@ -27,6 +27,7 @@ rem dm        : damage done during combat
 rem hp        : hit points
 rem mh        : max hit points
 rem au        : gold
+rem pt        : health potions
 rem dl        : dungeon level
 rem xp        : experience points
 rem xg        : experience goal for next level
@@ -65,13 +66,14 @@ rem get random unoccupied x,y in room dr
 rem main loop
 
 10 gosub900:mu=0:dx=0:dy=0
-11 getk$:if k$=""then11
+11 getk$:ifk$=""then11
 12 ifk$="i"thendy=-1:goto 500
 13 ifk$="j"thendx=-1:goto 500
 14 ifk$="k"thendy=1:goto 500
 15 ifk$="l"thendx=1:goto 500
 16 ifk$="r"then400
-17 goto10
+17 ifk$="q"andpt>0thenpt=pt-1:hp=hp+int(rnd(1)*6)+2:goto400
+18 goto10
 
 rem monsters move
 
@@ -91,7 +93,7 @@ rem hero can (and does) move
 
 500 x=hx:y=hy:gosub2:ifc=19thengosub700:goto400
 520 ifc=28thenau=au+int(rnd(1)*20)+1:c=32
-530 ifc=65thenhp=hp+int(rnd(1)*6)+2:c=32
+530 ifc=65thenpt=pt+1:c=32
 540 ifc=233thendl=dl+1:gosub7000:goto10
 550 ifc=102thengosub6000:goto500
 560 ifc=86thenm$="dart trap!":gosub640:c=32
@@ -155,7 +157,7 @@ rem wait for keypress
 rem status
 
 900 ifmu<>0thenreturn
-910 print"{home}{blk}{rvs on}"hp"{left}/"mh"{left},"dl"{left},"au"{left} ";
+910 print"{home}{blk}{rvs on}"hp"{left}/"mh"{left},"au"{left},"pt"{left} ";
 
 rem ... this is also an entry point
 
@@ -272,6 +274,10 @@ rem ... now shadow in the rooms
 rem ... and pick which room has the stairs
 
 7900 rs=int(rnd(1)*5)
+
+rem ... display dungeon level at bottom
+
+7905 c=dl:co=0:x=0:y=22:gosub4
 
 rem ... place hero.  pick a room and reveal it.  then put him in it, dammit.
 rem ... tail call!

@@ -9,6 +9,7 @@ a respectable subset of the usual "dungeon furniture":
 *   the contents of rooms are not visible until entered
 *   levels populated with monsters, treasure, potions, traps, and stairwells
 *   monsters persue the hero and engage in combat with hit points
+*   health potions can be collected and quaffed later
 *   experience points for victory in combat, experience levels
 *   queued status messages
 *   progressively more difficult dungeon levels
@@ -28,9 +29,11 @@ Use the following keys:
 *   `L` - go (or attack) east
 *   `K` - go (or attack) south
 *   `R` - rest (allow monsters to move)
+*   `Q` - quaff a health potion
 
 The status bar shows your current hit points, out of your maximum hit points,
-followed by the dungeon level you are on, followed by your gold.
+followed by the amount of gold you have, followed by the number of health
+potions you have.
 
 If something notable happened during the turn, a message about it will
 replace the status bar at the beginning of the next turn.  You can press
@@ -77,13 +80,11 @@ Run `MINI=yes make.sh` to build the MINI version of the game.
 TODO
 ----
 
-*   Potions should have more effect on deeper levels (yes, do this)
 *   Gold should be more plentiful on deeper levels
 *   Experience level should increase your ability to hit/damage?
 *   Ensure rooms can actually extend to the bottom and right of map
-*   Display exp level in status, dungeon level as letter in bottom left
+*   Display exp level in status
 *   Announce gold or health potion picked up
-*   Let health potions be in inventory?
 
 Discussion
 ----------
