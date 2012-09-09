@@ -33,7 +33,12 @@ Use the following keys:
 
 The status bar shows your current hit points, out of your maximum hit points,
 followed by the amount of gold you have, followed by the number of health
-potions you have.
+potions you have, followed by your experience level.
+
+The dungeon level you are currently on is shown in the lower left; level A is
+the shallowest level, B is the next deepest, and so on.
+
+You start at experience level zero, because, well, welcome to computer-dom.
 
 If something notable happened during the turn, a message about it will
 replace the status bar at the beginning of the next turn.  You can press
@@ -83,7 +88,6 @@ TODO
 *   Gold should be more plentiful on deeper levels
 *   Experience level should increase your ability to hit/damage?
 *   Ensure rooms can actually extend to the bottom and right of map
-*   Display exp level in status
 *   Announce gold or health potion picked up
 
 Discussion

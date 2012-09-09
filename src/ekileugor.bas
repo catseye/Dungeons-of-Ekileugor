@@ -157,7 +157,7 @@ rem wait for keypress
 rem status
 
 900 ifmu<>0thenreturn
-910 print"{home}{blk}{rvs on}"hp"{left}/"mh"{left},"au"{left},"pt"{left} ";
+910 print"{home}{blk}{rvs on}"hp"{left}/"mh"{left}h"au"{left}g"pt"{left}p"xl"{left}l";
 
 rem ... this is also an entry point
 
@@ -242,21 +242,14 @@ rem ... check that room does not overlap other rooms
 7300 ifol%=1then7110
 
 rem ... now draw a tunnel.  pick a room dr < i,
+rem ... and a random location on room i's north wall
+rem ... and a random location on room dr's west wall
 
-7400 dr=int(rnd(1)*i)
-
-rem ... pick a random location on room i's north wall
-
-7405 rx=int(rnd(1)*r%(i,2))+r%(i,0)
-
-rem ... pick a random location on room dr's west wall
-
-7410 ry=int(rnd(1)*r%(dr,3))+r%(dr,1)
+7400 dr=int(rnd(1)*i):rx=int(rnd(1)*r%(i,2))+r%(i,0):ry=int(rnd(1)*r%(dr,3))+r%(dr,1)
 
 rem ... tunnel north or south as appropriate...
 
 7420 x=rx:y=r%(i,1)
-
 7430 gosub3:ify<>rytheny=y+sgn(ry-y):goto7430
 
 rem ... tunnel east or west as appropriate.
@@ -271,13 +264,9 @@ rem ... now shadow in the rooms
 
 7500 co=0:c=102:fori=0to4:forx=r%(i,0)tor%(i,0)+r%(i,2):fory=r%(i,1)tor%(i,1)+r%(i,3):gosub4:next:next:next
 
-rem ... and pick which room has the stairs
+rem ... and pick which room has the stairs, and display dungeon level at bottom
 
-7900 rs=int(rnd(1)*5)
-
-rem ... display dungeon level at bottom
-
-7905 c=dl:co=0:x=0:y=22:gosub4
+7900 rs=int(rnd(1)*5):c=dl+128:x=0:y=22:gosub4
 
 rem ... place hero.  pick a room and reveal it.  then put him in it, dammit.
 rem ... tail call!
