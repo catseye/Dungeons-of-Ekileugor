@@ -11,7 +11,6 @@ rem cm        : color memory (constant)
 rem o         : temporary screen offset
 rem th        : temporary screen contents
 
-rem sb        : status bar mode
 rem m$        : message to print
 rem mv        : number to print after message (if not -1)
 rem mu        : message-up flag
@@ -70,7 +69,6 @@ rem main loop
 120 ifk$="j"thendx=-1:goto 500
 130 ifk$="k"thendy=1:goto 500
 140 ifk$="l"thendx=1:goto 500
-150 ifk$="{f1}"thensb=sb+1:gosub1100
 160 ifk$="r"then200
 180 goto100
 
@@ -112,10 +110,7 @@ rem ... first, find monster
 710 mn=mn+1:ifmn<=7then705
 
 rem ... SOMETHING IS WRONG.
-
-#ifdef DEBUG
-715 stop
-#endif
+rem 715 stop
 
 rem ... see if hit. simple for now.
 
@@ -143,16 +138,12 @@ rem monster attack hero!
 rem status
 
 1000 ifmu<>0thenreturn
-1002 print"{home}{blk}{rvs on} ";
-1005 ifsb=0thenprint"hp"hp"{left} /"mh"{left} ";
-1010 ifsb=1thenprint"gold"au"{left} ";
-1085 fori=pos(0)to21:print" ";:next
-1090 print"{rvs off}";:return
+1010 print"{home}{blk}{rvs on}"hp"{left}/"mh"{left},"dl"{left},"au"{left} ";
+1020 fori=pos(0)to21:print" ";:next:return
 
 rem erase status
 
 1100 print"{home}{blk}{rvs on}                      ";
-1105 ifsb>1thensb=0
 1110 return
 
 rem display message
@@ -309,11 +300,10 @@ rem ... place hero.  pick a room and reveal it.  then put him in it, dammit.
 rem init
 
 8000 dimm%(7,3),r%(4,3)
-8005 sc=7680:cm=38400:mh=31:hp=mh:dl=1
-8012 print"{clr}"
+8005 sc=7680:cm=38400:mh=31:hp=mh:dl=1:print"{clr}"
 8015 m$="hit any key to begin":gosub4000:gosub4000
 
-rem ... tricky! tricky! tail call!
+rem ... tricky! tricky! tail call! ok, not *that* tricky.
 
 8020 goto7000
 

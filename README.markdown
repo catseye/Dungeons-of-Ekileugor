@@ -10,8 +10,7 @@ a respectable subset of the usual "dungeon furniture":
 *   levels populated with monsters, treasure, and stairwells
 *   combat and hit points
 *   queued status messages
-*   (whatever else I can squeeze in:
-    possibly progressively more difficult dungeon levels)
+*   whatever else I can squeeze in: see TODO, below.
 
 Dungeons of Ekileugor is written in BASIC.  It makes use of colour and the
 Commodore graphics characters, but not of sound effects or a custom character
@@ -27,7 +26,9 @@ Use the following keys:
 *   `L` - go (or attack) east
 *   `K` - go (or attack) south
 *   `R` - rest
-*   F1  - toggle status bar view
+
+The status bar shows your current hit points, out of your maximum hit points,
+followed by the dungeon level you are on, followed by your gold.
 
 If something notable happened during the turn, a message about it will
 replace the status bar at the beginning of the next turn.  You can press
@@ -60,7 +61,6 @@ Run `MINI=yes make.sh` to build the MINI version of the game.
 TODO
 ----
 
-*   `?FRE(0)` after dying shows 52 bytes free -- not a lot.
 *   Health potions instead of resting to regain HP
 *   Smarter monster movement (not blocked so easily)
 *   Progressively harder (on lower levels, snakes hit more frequently)
