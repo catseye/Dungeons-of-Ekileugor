@@ -78,7 +78,7 @@ rem monsters move
 400 formn=0to7
 405 ifm%(mn,2)<=0then490
 410 x=m%(mn,0):y=m%(mn,1):dx=sgn(hx-x):dy=sgn(hy-y)
-420 gosub20:ifc=81thengosub800:goto490
+420 gosub20:ifc=81thengosub600:goto490
 430 ifc=32orc=86then460
 440 ifrnd(1)<.3thendx=0:goto420
 450 ifrnd(1)<.3thendy=0:goto420
@@ -95,11 +95,26 @@ rem hero can (and does) move
 530 ifc=65thenhp=hp+int(rnd(1)*6)+1:c=32
 540 ifc=233thendl=dl+1:gosub7000:goto100
 550 ifc=102thengosub6000:goto500
-560 ifc=86thenm$="dart trap!":gosub840:c=32
+560 ifc=86thenm$="dart trap!":gosub640:c=32
 570 ifc<>32then400
 580 gosub30:x=x+dx:y=y+dy:c=81:co=6:gosub40:hx=x:hy=y
 585 ifhp>mhthenhp=mh
 590 goto400
+
+rem monster attack hero!
+
+600 mv=-1:ifrnd(1)*(7-dl/4)<2then630
+620 m$="snake misses":gosub800:return
+630 m$="snake hits for"
+
+rem ... also an entry point (trap)
+
+640 dm=int(rnd(1)*4)+1:mv=dm:gosub800
+650 hp=hp-dm:ifhp>0thenreturn
+
+rem ... died
+
+660 print"{clr}":end
 
 rem hero attack monster!
 rem ... first, find monster
@@ -114,31 +129,29 @@ rem 715 stop
 rem ... see if hit. simple for now.
 
 720 mv=-1:ifint(rnd(1)*6)<3then730
-725 m$="you miss":gosub4000:return
+725 m$="you miss":gosub800:return
 730 dm=int(rnd(1)*6)+1:mv=dm
-735 m$="you hit for":gosub4000
+735 m$="you hit for":gosub800
 740 m%(mn,2)=m%(mn,2)-dm:xp=xp+int(rnd(1)*3)*dl+1
-743 ifxp>xgthenxl=xl+1:xg=xg*2:mh=mh+int(rnd(1)*8)+2:hp=mh:m$="gain exp,level":mv=xl:gosub4000:goto743
+743 ifxp>xgthenxl=xl+1:xg=xg*2:mh=mh+int(rnd(1)*8)+2:hp=mh:m$="gain exp,level":mv=xl:gosub800:goto743
 745 ifm%(mn,2)>0thenreturn
-750 mv=-1:m$="you killed snake":gosub4000
+750 mv=-1:m$="you killed snake":gosub800
 760 x=m%(mn,0):y=m%(mn,1):gosub30
 765 m%(mn,0)=-1:m%(mn,1)=-1:m%(mn,2)=0
 780 x=hx:y=hy:return
 
-rem monster attack hero!
+rem display message
 
-800 mv=-1:ifrnd(1)*(7-dl/4)<2then830
-820 m$="snake misses":gosub4000:return
-830 m$="snake hits for"
+800 ifmu<>0thengosub850
+810 print"{home}{blk}{rvs on} "m$;
+820 ifmv>0thenprintmv"{left} ";
+830 gosub920:mu=1:return
 
-rem ... also an entry point (trap)
+rem wait for keypress
 
-840 dm=int(rnd(1)*4)+1:mv=dm:gosub4000
-850 hp=hp-dm:ifhp>0thenreturn
-
-rem ... died
-
-860 print"{clr}":end
+850 print"{home}Z";
+855 getkk$:ifkk$=""thendr=rnd(1):goto855
+860 return
 
 rem status
 
@@ -148,19 +161,6 @@ rem status
 rem ... this is also an entry point
 
 920 fori=pos(0)to21:print" ";:next:return
-
-rem display message
-
-4000 ifmu<>0thengosub4100
-4010 print"{home}{blk}{rvs on} "m$;
-4015 ifmv>0thenprintmv"{left} ";
-4020 gosub920:mu=1:return
-
-rem wait for keypress
-
-4100 print"{home}Z";
-4102 getkk$:ifkk$=""thendr=rnd(1):goto4102
-4104 return
 
 rem figure out which room x+dx,y+dy is in
 
