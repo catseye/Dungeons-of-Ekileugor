@@ -78,7 +78,6 @@ TODO
 ----
 
 *   Potions should have more effect on deeper levels (yes, do this)
-*   Potion min heal 2 hp.
 *   Gold should be more plentiful on deeper levels
 *   Experience level should increase your ability to hit/damage?
 *   Ensure rooms can actually extend to the bottom and right of map

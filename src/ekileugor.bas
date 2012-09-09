@@ -174,9 +174,7 @@ rem figure out which room x+dx,y+dy is in
 rem ... if dr still=-1, SOMETHING IS WRONG, it will crash below.
 rem ... reveal room dr (NOTE: this is also an entry point to this subroutine)
 
-6100 forx=r%(dr,0)tor%(dr,0)+r%(dr,2)
-6110 fory=r%(dr,1)tor%(dr,1)+r%(dr,3)
-6120 gosub3:next:next
+6100 forx=r%(dr,0)tor%(dr,0)+r%(dr,2):fory=r%(dr,1)tor%(dr,1)+r%(dr,3):gosub3:next:next
 
 rem populate room dr
 
@@ -276,7 +274,6 @@ rem ... and pick which room has the stairs
 7900 rs=int(rnd(1)*5)
 
 rem ... place hero.  pick a room and reveal it.  then put him in it, dammit.
+rem ... tail call!
 
-7910 dr=int(rnd(1)*5):gosub6100:gosub5
-7920 hx=x:hy=y:c=81:co=6:gosub4
-7995 return
+7910 dr=int(rnd(1)*5):gosub6100:gosub5:hx=x:hy=y:c=81:co=6:goto4
