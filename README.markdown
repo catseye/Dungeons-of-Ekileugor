@@ -7,7 +7,7 @@ a respectable subset of the usual "dungeon furniture":
 
 *   random generation of reasonable dungeon levels, with rooms and passages
 *   the contents of rooms are not visible until entered
-*   levels populated with monsters, treasure, potions, and stairwells
+*   levels populated with monsters, treasure, potions, traps, and stairwells
 *   monsters persue the hero and engage in combat with hit points
 *   queued status messages
 *   progressively more difficult dungeon levels
@@ -62,8 +62,9 @@ Run `MINI=yes make.sh` to build the MINI version of the game.
 TODO
 ----
 
-*   Traps!
-*   Possibility of 0 snakes or gold or potions or traps in a room
+*   Potions should have more effect on deeper levels
+*   Snakes should not hit as frequently on shallower levels
+*   Maybe armor or weapon +1's, or experience points/levels
 
 Discussion
 ----------

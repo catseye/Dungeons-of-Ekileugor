@@ -50,7 +50,7 @@ rem erase char at x,y: falls through to line 40
 
 rem write char c with color co at x,y
 
-40 o=y*22+x:pokesc+o,c:pokecm+o,co:return
+40 o=y*22+x:pokecm+o,co:pokesc+o,c:return
 
 rem get random unoccupied x,y in room dr
 
@@ -77,7 +77,7 @@ rem monsters move
 410 x=m%(mn,0):y=m%(mn,1):dx=sgn(hx-x):dy=sgn(hy-y)
 420 gosub20
 430 ifc=81thengosub800:goto490
-435 ifc=32then460
+435 ifc=32orc=86then460
 440 ifrnd(1)<.3thendx=0:goto420
 450 ifrnd(1)<.3thendy=0:goto420
 455 goto490
@@ -93,9 +93,10 @@ rem hero can (and does) move
 500 x=hx:y=hy:gosub 20
 510 ifc=19thengosub700:goto400
 520 ifc=28thenau=au+int(rnd(1)*20)+1:c=32
-523 ifc=65thenhp=hp+int(rnd(1)*6)+1:c=32
-525 ifc=233thendl=dl+1:gosub7000:goto100
-530 ifc=102thengosub6000:goto500
+530 ifc=65thenhp=hp+int(rnd(1)*6)+1:c=32
+540 ifc=233thendl=dl+1:gosub7000:goto100
+550 ifc=102thengosub6000:goto500
+560 ifc=86thenm$="dart trap!":gosub840:c=32
 570 ifc<>32then400
 580 gosub30:x=x+dx:y=y+dy:c=81:co=6:gosub40:hx=x:hy=y
 585 ifhp>mhthenhp=mh
@@ -129,10 +130,13 @@ rem monster attack hero!
 
 800 mv=-1:ifrnd(1)*(7-dl/4)<2then830
 820 m$="snake misses":gosub4000:return
-830 dm=int(rnd(1)*4)+1:mv=dm
-835 m$="snake hits for":gosub4000
-840 hp=hp-dm:ifhp>0thenreturn
-850 goto9000
+830 m$="snake hits for"
+
+rem ... also an entry point (trap)
+
+840 dm=int(rnd(1)*4)+1:mv=dm:gosub4000
+850 hp=hp-dm:ifhp>0thenreturn
+860 goto9000
 
 rem status
 
@@ -176,16 +180,14 @@ rem ... reveal room dr (NOTE: this is also an entry point to this subroutine)
 rem populate room dr
 
 rem ... here thar be monsters
-rem ... (TODO: allocate monsters properly in m% array)
 
-6200 m=int(rnd(1)*4)
-6210 forj=1tom:gosub60:gosub6500:next
+6200 m=int(rnd(1)*4):ifm>0thenforj=1tom:gosub60:gosub6500:next
 
 rem ... and gold and traps and potions
 
-6300 j=int(rnd(1)*3):fori=1toj:gosub60:c=28:co=7:gosub40:next
-rem 6302 j=int(rnd(1)*2):fori=1toj:gosub60:c=86:co=0:gosub40:next
-6304 j=int(rnd(1)*2):fori=1toj:gosub60:c=65:co=4:gosub40:next
+6300 j=int(rnd(1)*3):ifj>0thenfori=1toj:gosub60:c=28:co=7:gosub40:next
+6302 ifrnd(1)>.3thengosub60:c=86:co=1:gosub40
+6304 ifrnd(1)>.5thengosub60:c=65:co=4:gosub40
 
 rem ... and stairs, if this is that room
 
