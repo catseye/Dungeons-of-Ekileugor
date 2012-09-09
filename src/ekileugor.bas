@@ -131,7 +131,10 @@ rem ... also an entry point (trap)
 
 840 dm=int(rnd(1)*4)+1:mv=dm:gosub4000
 850 hp=hp-dm:ifhp>0thenreturn
-860 goto9000
+
+rem ... died
+
+860 print"{clr}":end
 
 rem status
 
@@ -281,7 +284,3 @@ rem init
 8000 dimm%(7,2),r%(4,3)
 rem ... tail call!
 8005 sc=7680:cm=38400:mh=31:hp=mh:dl=1:print"{clr}":goto7000
-
-rem died
-
-9000 gosub4000:print"{clr}level"dl"gold"au

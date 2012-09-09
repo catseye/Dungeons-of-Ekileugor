@@ -48,6 +48,15 @@ You will notice that, the first time you play after starting the VIC-20
 (or your emulator), the first dungeon level is always the same one.
 However, things will quickly get more random as the game progresses.
 
+You will also notice that the game ends rather abruptly when you die.  If
+you would like to see your final score (to see if you have beaten your
+personal record, for example), after the game ends, type:
+
+    ?au,dl
+
+This will display the amount of gold you accumulated, and the dungeon level
+you died on.
+
 Building
 --------
 
