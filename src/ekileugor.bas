@@ -4,11 +4,11 @@ rem i         : temporary (loops)
 
 rem x,y       : temporary position (used by all)
 rem dx,dy     : delta for move (used by all)
-rem co        : temporary colour to assign
 rem sc        : screen memory (constant)
 rem cm        : color memory (constant)
 rem o         : temporary screen offset
 rem c         : temporary screen contents (to write or to read)
+rem co        : temporary character colour (to write)
 
 rem m$        : message to print
 rem mv        : number to print after message (if not -1)
@@ -19,8 +19,7 @@ rem mn        : current monster number
 rem m%(#,p)   : monster matrix: first dimension is mn, second is:
 rem           :   0 = x position
 rem           :   1 = y position
-rem           :   2 = monster type (= screen code)
-rem           :   3 = monster hp
+rem           :   2 = monster hp
 
 rem dm        : damage done during combat
 
@@ -78,7 +77,7 @@ rem rest
 rem monsters move
 
 400 formn=0to7
-405 ifm%(mn,3)<=0then490
+405 ifm%(mn,2)<=0then490
 410 x=m%(mn,0):y=m%(mn,1):dx=sgn(hx-x):dy=sgn(hy-y)
 420 gosub20
 430 ifc=81thengosub800:goto490
@@ -120,11 +119,11 @@ rem ... see if hit. simple for now.
 725 m$="you miss":gosub4000:return
 730 dm=int(rnd(1)*6)+1:mv=dm
 735 m$="you hit for":gosub4000
-740 m%(mn,3)=m%(mn,3)-dm
-745 ifm%(mn,3)>0thenreturn
+740 m%(mn,2)=m%(mn,2)-dm
+745 ifm%(mn,2)>0thenreturn
 750 mv=-1:m$="you killed snake":gosub4000
 760 x=m%(mn,0):y=m%(mn,1):gosub30
-765 m%(mn,0)=-1:m%(mn,1)=-1:m%(mn,3)=0
+765 m%(mn,0)=-1:m%(mn,1)=-1:m%(mn,2)=0
 780 x=hx:y=hy
 790 return
 
@@ -196,11 +195,10 @@ rem ... and stairs, if this is that room
 
 rem allocate monster at x,y
 
-6500 mn=-1:fori=0to7:ifm%(i,3)=0thenmn=i:i=10
+6500 mn=-1:fori=0to7:ifm%(i,2)=0thenmn=i:i=10
 6510 next
 6520 ifmn=-1thenreturn
-6530 m%(mn,0)=x:m%(mn,1)=y:m%(mn,2)=19:m%(mn,3)=rnd(1)*6+dl
-6540 c=19:co=2:gosub40
+6530 m%(mn,0)=x:m%(mn,1)=y:m%(mn,2)=rnd(1)*6+dl:c=19:co=2:gosub40
 6550 return
 
 rem init level
@@ -217,7 +215,7 @@ rem ... first clear the screen
 
 rem ... clear the monster table
 
-7060 fori=0to7:m%(i,3)=0:next
+7060 fori=0to7:m%(i,2)=0:next
 
 rem ... then make some rooms
 
@@ -293,7 +291,7 @@ rem ... place hero.  pick a room and reveal it.  then put him in it, dammit.
 
 rem init
 
-8000 dimm%(7,3),r%(4,3)
+8000 dimm%(7,2),r%(4,3)
 8005 sc=7680:cm=38400:mh=31:hp=mh:dl=1:print"{clr}"
 8015 m$="hit any key to begin":gosub4000:gosub4000
 
