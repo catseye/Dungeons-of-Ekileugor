@@ -83,7 +83,10 @@ rem monsters move
 410 x=m%(mn,0):y=m%(mn,1):dx=sgn(hx-x):dy=sgn(hy-y)
 420 gosub20
 430 ifth=81thengosub800
-455 ifth<>32then490
+435 ifth=32then460
+440 ifrnd(1)<.3thendx=0:goto420
+450 ifrnd(1)<.3thendy=0:goto420
+455 goto490
 460 gosub30
 470 x=x+dx:y=y+dy:ch=19:co=2:gosub40
 480 m%(mn,0)=x:m%(mn,1)=y
@@ -128,7 +131,7 @@ rem ... see if hit. simple for now.
 
 rem monster attack hero!
 
-800 mv=-1:ifrnd(1)*(7-dl/2)<2then830
+800 mv=-1:ifrnd(1)*(7-dl/4)<2then830
 820 m$="snake misses":gosub4000:return
 830 dm=int(rnd(1)*4)+1:mv=dm
 835 m$="snake hits for":gosub4000
@@ -200,7 +203,7 @@ rem allocate monster at x,y
 6500 mn=-1:fori=0to7:ifm%(i,3)=0thenmn=i:i=10
 6510 next
 6520 ifmn=-1thenreturn
-6530 m%(mn,0)=x:m%(mn,1)=y:m%(mn,2)=19:m%(mn,3)=rnd(1)*6+1
+6530 m%(mn,0)=x:m%(mn,1)=y:m%(mn,2)=19:m%(mn,3)=rnd(1)*6+dl
 6540 ch=19:co=2:gosub40
 6550 return
 
@@ -258,13 +261,11 @@ rem ... tunnel north or south as appropriate...
 
 7420 x=rx:y=r%(i,1)
 
-rem 7230 ch=14:co=4:gosub40
 7430 gosub30
 7440 ify<>rytheny=y+sgn(ry-y):goto7430
 
 rem ... tunnel east or west as appropriate.
 
-rem ch=5:co=5:gosub40
 7450 gosub30
 7460 ifx<>r%(dr,0)thenx=x+sgn(r%(dr,0)-x):goto7450
 

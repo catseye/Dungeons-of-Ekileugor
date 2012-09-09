@@ -63,7 +63,6 @@ TODO
 ----
 
 *   Health potions instead of resting to regain HP
-*   Smarter monster movement (not blocked so easily)
 *   Possibility of 0 snakes or gold or potions in a room
 
 Discussion
