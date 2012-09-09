@@ -4,12 +4,11 @@ rem i         : temporary (loops)
 
 rem x,y       : temporary position (used by all)
 rem dx,dy     : delta for move (used by all)
-rem ch        : temporary char to write (screen code)
 rem co        : temporary colour to assign
 rem sc        : screen memory (constant)
 rem cm        : color memory (constant)
 rem o         : temporary screen offset
-rem th        : temporary screen contents
+rem c         : temporary screen contents (to write or to read)
 
 rem m$        : message to print
 rem mv        : number to print after message (if not -1)
@@ -44,20 +43,20 @@ rem short, frequently-called routines
 
 rem compute screen offset with delta and read char there
 
-20 o=(y+dy)*22+x+dx:th=peek(sc+o):return
+20 o=(y+dy)*22+x+dx:c=peek(sc+o):return
 
 rem erase char at x,y: falls through to line 40
 
-30 ch=32:co=0
+30 c=32:co=0
 
-rem write char ch with color co at x,y
+rem write char c with color co at x,y
 
-40 o=y*22+x:pokesc+o,ch:pokecm+o,co:return
+40 o=y*22+x:pokesc+o,c:pokecm+o,co:return
 
 rem get random unoccupied x,y in room dr
 
 60 x=int(rnd(1)*(r%(dr,2)+1))+r%(dr,0):y=int(rnd(1)*(r%(dr,3)+1))+r%(dr,1)
-61 dx=0:dy=0:gosub20:ifth<>32then60
+61 dx=0:dy=0:gosub20:ifc<>32then60
 62 return
 
 rem main loop
@@ -82,13 +81,13 @@ rem monsters move
 405 ifm%(mn,3)<=0then490
 410 x=m%(mn,0):y=m%(mn,1):dx=sgn(hx-x):dy=sgn(hy-y)
 420 gosub20
-430 ifth=81thengosub800
-435 ifth=32then460
+430 ifc=81thengosub800:goto490
+435 ifc=32then460
 440 ifrnd(1)<.3thendx=0:goto420
 450 ifrnd(1)<.3thendy=0:goto420
 455 goto490
 460 gosub30
-470 x=x+dx:y=y+dy:ch=19:co=2:gosub40
+470 x=x+dx:y=y+dy:c=19:co=2:gosub40
 480 m%(mn,0)=x:m%(mn,1)=y
 490 next
 
@@ -97,12 +96,12 @@ rem monsters move
 rem hero can (and does) move
 
 500 x=hx:y=hy:gosub 20
-510 ifth=19thengosub700
-520 ifth=28thenau=au+int(rnd(1)*20)+1:th=32
-525 ifth=233thendl=dl+1:gosub7000:goto100
-530 ifth=102thengosub6000:goto500
-570 if th<>32then400
-580 gosub30:x=x+dx:y=y+dy:ch=81:co=6:gosub40:hx=x:hy=y
+510 ifc=19thengosub700:goto400
+520 ifc=28thenau=au+int(rnd(1)*20)+1:c=32
+525 ifc=233thendl=dl+1:gosub7000:goto100
+530 ifc=102thengosub6000:goto500
+570 ifc<>32then400
+580 gosub30:x=x+dx:y=y+dy:c=81:co=6:gosub40:hx=x:hy=y
 590 goto400
 
 rem hero attack monster!
@@ -173,12 +172,9 @@ rem figure out which room x+dx,y+dy is in
 rem ... if dr still=-1, SOMETHING IS WRONG, it will crash below.
 rem ... reveal room dr (NOTE: this is also an entry point to this subroutine)
 
-6100 co=0:ch=32
-6140 forx=r%(dr,0)tor%(dr,0)+r%(dr,2)
-6150 fory=r%(dr,1)tor%(dr,1)+r%(dr,3)
-6155 gosub40
-6160 next
-6170 next
+6100 forx=r%(dr,0)tor%(dr,0)+r%(dr,2)
+6110 fory=r%(dr,1)tor%(dr,1)+r%(dr,3)
+6120 gosub30:next:next
 
 rem populate room dr
 
@@ -190,11 +186,11 @@ rem ... (TODO: allocate monsters properly in m% array)
 
 rem ... and gold
 
-6300 j=int(rnd(1)*3):fori=1toj:gosub60:ch=28:co=7:gosub40:next
+6300 j=int(rnd(1)*3):fori=1toj:gosub60:c=28:co=7:gosub40:next
 
 rem ... and stairs, if this is that room
 
-6310 ifdr=rsthengosub60:ch=233:co=0:gosub40
+6310 ifdr=rsthengosub60:c=233:co=0:gosub40
 
 6390 return
 
@@ -204,7 +200,7 @@ rem allocate monster at x,y
 6510 next
 6520 ifmn=-1thenreturn
 6530 m%(mn,0)=x:m%(mn,1)=y:m%(mn,2)=19:m%(mn,3)=rnd(1)*6+dl
-6540 ch=19:co=2:gosub40
+6540 c=19:co=2:gosub40
 6550 return
 
 rem init level
@@ -216,7 +212,7 @@ rem ... first clear the screen
 7020 print"                      ";
 7030 next
 7040 print"{rvs off}"
-7050 co=0:ch=160:y=21:forx=0to21:gosub40:next
+7050 co=0:c=160:y=21:forx=0to21:gosub40:next
 7055 y=22:forx=0to21:gosub40:next
 
 rem ... clear the monster table
@@ -275,7 +271,7 @@ rem ... tunnel complete.  (next room, please)
 
 rem ... now shadow in the rooms
 
-7500 co=0:ch=102
+7500 co=0:c=102
 7502 fori=0to4
 7505 forx=r%(i,0)tor%(i,0)+r%(i,2)
 7510 fory=r%(i,1)tor%(i,1)+r%(i,3)
@@ -291,7 +287,7 @@ rem ... and pick which room has the stairs
 rem ... place hero.  pick a room and reveal it.  then put him in it, dammit.
 
 7910 dr=int(rnd(1)*5):gosub6100:gosub60
-7920 hx=x:hy=y:ch=81:co=6:gosub40
+7920 hx=x:hy=y:c=81:co=6:gosub40
 
 7995 return
 
