@@ -78,8 +78,13 @@ TODO
 ----
 
 *   Potions should have more effect on deeper levels (yes, do this)
-*   Snakes should not hit as frequently on shallower levels
+*   Potion min heal 2 hp.
+*   Gold should be more plentiful on deeper levels
 *   Experience level should increase your ability to hit/damage?
+*   Ensure rooms can actually extend to the bottom and right of map
+*   Display exp level in status, dungeon level as letter in bottom left
+*   Announce gold or health potion picked up
+*   Let health potions be in inventory?
 
 Discussion
 ----------

@@ -40,7 +40,7 @@ rem           :   3 = room height minus one
 rem dr        : destination room during dungeon level creation & revealing
 rem rs        : room with stairs (picked during level creation)
 
-1 dimm%(7,2),r%(4,3):sc=7680:cm=38400:mh=19:xg=10:hp=mh:dl=1:print"{clr}":gosub7000:goto100
+1 dimm%(7,2),r%(4,3):sc=7680:cm=38400:mh=19:xg=10:hp=mh:dl=1:print"{clr}":gosub7000:goto10
 
 rem short, frequently-called routines
 
@@ -64,14 +64,14 @@ rem get random unoccupied x,y in room dr
 
 rem main loop
 
-100 gosub900:mu=0:dx=0:dy=0
-105 getk$:if k$=""then105
-110 ifk$="i"thendy=-1:goto 500
-120 ifk$="j"thendx=-1:goto 500
-130 ifk$="k"thendy=1:goto 500
-140 ifk$="l"thendx=1:goto 500
-160 ifk$="r"then400
-180 goto100
+10 gosub900:mu=0:dx=0:dy=0
+11 getk$:if k$=""then11
+12 ifk$="i"thendy=-1:goto 500
+13 ifk$="j"thendx=-1:goto 500
+14 ifk$="k"thendy=1:goto 500
+15 ifk$="l"thendx=1:goto 500
+16 ifk$="r"then400
+17 goto10
 
 rem monsters move
 
@@ -85,14 +85,14 @@ rem monsters move
 455 goto490
 460 gosub3:x=x+dx:y=y+dy:c=19:co=2:gosub4
 480 m%(mn,0)=x:m%(mn,1)=y
-490 next:goto100
+490 next:goto10
 
 rem hero can (and does) move
 
 500 x=hx:y=hy:gosub2:ifc=19thengosub700:goto400
 520 ifc=28thenau=au+int(rnd(1)*20)+1:c=32
-530 ifc=65thenhp=hp+int(rnd(1)*6)+1:c=32
-540 ifc=233thendl=dl+1:gosub7000:goto100
+530 ifc=65thenhp=hp+int(rnd(1)*6)+2:c=32
+540 ifc=233thendl=dl+1:gosub7000:goto10
 550 ifc=102thengosub6000:goto500
 560 ifc=86thenm$="dart trap!":gosub640:c=32
 570 ifc<>32then400
