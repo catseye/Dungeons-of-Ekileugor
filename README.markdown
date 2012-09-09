@@ -10,13 +10,19 @@ There are actually two versions of the game; a FULL version, which requires
 some amount of memory expansion, and a MINI version, which runs on an
 unexpanded VIC-20.  With the MINI version, you get:
 
-*   random generation of reasonable dungeon levels, with rooms and passages
-*   the contents of rooms and passages are not visible until entered
+*   random generation of somewhat reasonable dungeon levels, with rooms and
+    passages
+*   the contents of rooms are not visible until entered
 *   levels populated with monsters, treasure, and stairwells
-*   (possibly more, if I can squeeze it in)
+*   (possibly a tiny bit more, if I can squeeze it in)
 
-With the FULL version, you will, one day, get:
+With the FULL version, you get:
 
+*   more reasonable dungeon level generation
+
+And you may one day get:
+
+*   progressively more difficult dungeon levels
 *   more than one kind of monster
 *   character generation with three stats (strength, intelligence, and
     dexterity) and hit points

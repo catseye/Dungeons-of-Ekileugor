@@ -27,13 +27,15 @@ rem           :   3 = monster hp
 
 rem dm        : damage done during combat
 
+#ifdef FULL
 rem sg        : strength
 rem in        : intelligence
 rem de        : dexterity
+rem pt        : health potions
+#endif
 rem hp        : hit points
 rem mh        : max hit points
 rem au        : gold
-rem pt        : health potions
 rem dl        : dungeon level
 
 rem r%(#,p)   : room matrix: first dimension is room number, second:
@@ -149,10 +151,8 @@ rem status
 1010 ifsb=1thenprint"gold"au"{left} ";
 
 #ifdef FULL
-
 1012 ifsb=2thenprint"potion"pt"{left} ";
 1015 ifsb=3thenprint"str"sg"{left} int"in"{left} dex"de"{left} ";
-
 #endif
 
 1085 fori=pos(0)to21:print" ";:next
@@ -242,11 +242,11 @@ rem ... clear the monster table
 7060 fori=0tomm:m%(i,3)=0:next
 
 rem ... then make some rooms
-rem ... (this part isn't as clever as it should be)
 
 7100 fori=0to4
-7110 r%(i,2)=int(rnd(1)*6)+3:r%(i,3)=int(rnd(1)*6)+3
-7120 r%(i,0)=int(rnd(1)*(20-r%(i,2)))+1:r%(i,1)=int(rnd(1)*(20-r%(i,3)))+1
+7110 r%(i,2)=int(rnd(1)*3)*2+2:r%(i,3)=int(rnd(1)*3)*2+2
+7120 r%(i,0)=int(rnd(1)*(20-r%(i,2))/2)*2+1
+7125 r%(i,1)=int(rnd(1)*(20-r%(i,3))/2)*2+1
 
 rem ... if this is the first room, no checking or tunnel is needed.
 
@@ -321,9 +321,11 @@ rem ... place hero.  pick a room and reveal it.  then put him in it, dammit.
 
 rem init
 
-8000 dim m%(9,3),r%(4,3)
-8005 sg=10:in=11:de=12:mh=31:hp=mh:dl=1:mm=9
-8010 sc=7680:cm=38400
+8000 dimm%(9,3),r%(4,3)
+8005 sc=7680:cm=38400:mh=31:hp=mh:dl=1:mm=9
+#ifdef FULL
+8010 sg=10:in=11:de=12
+#endif
 8012 print"{clr}"
 8015 m$="hit any key to begin":gosub4000:gosub4000
 rem ... tricky! tricky! tail call!
