@@ -282,9 +282,8 @@ rem ... place hero.  pick a room and reveal it.  then put him in it, dammit.
 rem init
 
 8000 dimm%(7,2),r%(4,3)
-8005 sc=7680:cm=38400:mh=31:hp=mh:dl=1:print"{clr}"
 rem ... tail call!
-8015 m$="hit any key to begin":gosub4000:gosub4000:goto7000
+8005 sc=7680:cm=38400:mh=31:hp=mh:dl=1:print"{clr}":goto7000
 
 rem died
 

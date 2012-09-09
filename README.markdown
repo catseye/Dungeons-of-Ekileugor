@@ -1,7 +1,7 @@
 Dungeons of Ekileugor
 =====================
 
-_Dungeons of Ekileugor_ is a little roguelike game for the *unexpanded*
+_Dungeons of Ekileugor_ is a little roguelike game for the **unexpanded**
 Commodore VIC-20.  Despite the limitations of this architecture, it supports
 a respectable subset of the usual "dungeon furniture":
 
@@ -26,7 +26,7 @@ Use the following keys:
 *   `J` - go (or attack) west
 *   `L` - go (or attack) east
 *   `K` - go (or attack) south
-*   `R` - rest
+*   `R` - rest (allow monsters to move)
 
 The status bar shows your current hit points, out of your maximum hit points,
 followed by the dungeon level you are on, followed by your gold.
@@ -43,6 +43,10 @@ corner.
 We suggest that, if you are playing in an emulator in WARP mode, you do
 not press space to dismiss status messages, as the space bar repeats on
 the VIC-20.  Just press any key not assigned to an action, perhaps `Z`.
+
+You will notice that, the first time you play after starting the VIC-20
+(or your emulator), the first dungeon level is always the same one.
+However, things will quickly get more random as the game progresses.
 
 Building
 --------
@@ -90,4 +94,5 @@ justify the sharing of a code base with another version of the program, I
 decided to concentrate on it, and save the FULL version for some potentially
 mythical sequel.
 
-Really, this project was mostly started just to use the title "Ekileugor".
+Really, this project was undertaken mostly just as an excuse to use the word
+"Ekileugor" in the title (have you figured it out yet?)
