@@ -263,10 +263,7 @@ rem ... tunnel complete.  (next room, please)
 
 rem ... now shadow in the rooms
 
-7500 co=0:c=102:fori=0to4
-7505 forx=r%(i,0)tor%(i,0)+r%(i,2)
-7510 fory=r%(i,1)tor%(i,1)+r%(i,3)
-7515 gosub40:next:next:next
+7500 co=0:c=102:fori=0to4:forx=r%(i,0)tor%(i,0)+r%(i,2):fory=r%(i,1)tor%(i,1)+r%(i,3):gosub40:next:next:next
 
 rem ... and pick which room has the stairs
 
