@@ -41,13 +41,16 @@ rem           :   3 = room height minus one
 rem dr        : destination room during dungeon level creation & revealing
 rem rs        : room with stairs (picked during level creation)
 
-1 dimm%(7,2),r%(4,3):sc=7680:cm=38400:mh=19:xg=10:hp=mh:dl=1:print"{clr}":gosub7000:goto10
+rem line 1 is reserved for a possible machine language thing
+
+2 deffnr(x)=int(rnd(1)*x)
+4 dimm%(7,2),r%(4,3):sc=7680:cm=38400:mh=19:xg=10:hp=mh:dl=1:print"{clr}":gosub7000:goto10
 
 rem short, frequently-called routines
 
 rem compute screen offset with delta and read char there
 
-2 o=(y+dy)*22+x+dx:c=peek(sc+o):return
+5 o=(y+dy)*22+x+dx:c=peek(sc+o):return
 
 rem erase char at x,y: falls through to line 4
 
@@ -59,7 +62,7 @@ rem write char c with color co at x,y
 
 rem get random unoccupied x,y in room dr
 
-8 x=int(rnd(1)*(r%(dr,2)+1))+r%(dr,0):y=int(rnd(1)*(r%(dr,3)+1))+r%(dr,1):dx=0:dy=0:gosub2:ifc<>32then8
+8 x=fnr(r%(dr,2)+1)+r%(dr,0):y=fnr(r%(dr,3)+1)+r%(dr,1):dx=0:dy=0:gosub5:ifc<>32then8
 9 return
 
 rem main loop
@@ -71,7 +74,7 @@ rem main loop
 14 ifk$="k"thendy=1:goto 500
 15 ifk$="l"thendx=1:goto 500
 16 ifk$="r"then400
-17 ifk$="q"andpt>0thenpt=pt-1:hp=hp+int(rnd(1)*6)+2:goto400
+17 ifk$="q"andpt>0thenpt=pt-1:hp=hp+fnr(6)+2:goto400
 18 goto10
 
 rem monsters move
@@ -79,7 +82,7 @@ rem monsters move
 400 formn=0to7
 405 ifm%(mn,2)<=0then490
 410 x=m%(mn,0):y=m%(mn,1):dx=sgn(hx-x):dy=sgn(hy-y)
-420 gosub2:ifc=81thengosub600:goto490
+420 gosub5:ifc=81thengosub600:goto490
 430 ifc=32orc=86then460
 440 ifrnd(1)<.3thendx=0:goto420
 450 ifrnd(1)<.3thendy=0:goto420
@@ -90,8 +93,8 @@ rem monsters move
 
 rem hero can (and does) move
 
-500 x=hx:y=hy:gosub2:ifc=19thengosub700:goto400
-520 ifc=28thenau=au+int(rnd(1)*20)+1:c=32
+500 x=hx:y=hy:gosub5:ifc=19thengosub700:goto400
+520 ifc=28thenau=au+fnr(20)+1:c=32
 530 ifc=65thenpt=pt+1:c=32
 540 ifc=233thendl=dl+1:gosub7000:goto10
 550 ifc=102thengosub6000:goto500
@@ -109,7 +112,7 @@ rem monster attack hero!
 
 rem ... also an entry point (trap)
 
-640 dm=int(rnd(1)*4)+1:mv=dm:gosub800
+640 dm=fnr(4)+1:mv=dm:gosub800
 650 hp=hp-dm:ifhp>0thenreturn
 
 rem ... died
@@ -128,12 +131,12 @@ rem 715 stop
 
 rem ... see if hit. simple for now.
 
-720 mv=-1:ifint(rnd(1)*6)<3then730
+720 mv=-1:iffnr(6)<3then730
 725 m$="you miss":gosub800:return
-730 dm=int(rnd(1)*6)+1:mv=dm
+730 dm=fnr(6)+1:mv=dm
 735 m$="you hit for":gosub800
-740 m%(mn,2)=m%(mn,2)-dm:xp=xp+int(rnd(1)*3)*dl+1
-743 ifxp>xgthenxl=xl+1:xg=xg*2:mh=mh+int(rnd(1)*8)+2:hp=mh:m$="gain exp,level":mv=xl:gosub800:goto743
+740 m%(mn,2)=m%(mn,2)-dm:xp=xp+fnr(3)*dl+1
+743 ifxp>xgthenxl=xl+1:xg=xg*2:mh=mh+fnr(8)+2:hp=mh:m$="gain exp,level":mv=xl:gosub800:goto743
 745 ifm%(mn,2)>0thenreturn
 750 mv=-1:m$="you killed snake":gosub800
 760 x=m%(mn,0):y=m%(mn,1):gosub6
@@ -181,11 +184,11 @@ rem populate room dr
 
 rem ... here thar be monsters
 
-6200 m=int(rnd(1)*4):ifm>0thenforj=1tom:gosub8:gosub6500:next
+6200 m=fnr(4):ifm>0thenforj=1tom:gosub8:gosub6500:next
 
 rem ... and gold and traps and potions
 
-6300 j=int(rnd(1)*3):ifj>0thenfori=1toj:gosub8:c=28:co=7:gosub7:next
+6300 j=fnr(3):ifj>0thenfori=1toj:gosub8:c=28:co=7:gosub7:next
 6302 ifrnd(1)>.3thengosub8:c=86:co=1:gosub7
 6304 ifrnd(1)>.5thengosub8:c=65:co=4:gosub7
 
@@ -216,9 +219,9 @@ rem ... clear the monster table
 rem ... then make some rooms
 
 7100 fori=0to4
-7110 r%(i,2)=int(rnd(1)*3)*2+2:r%(i,3)=int(rnd(1)*3)*2+2
-7120 r%(i,0)=int(rnd(1)*(20-r%(i,2))/2)*2+1
-7125 r%(i,1)=int(rnd(1)*(20-r%(i,3))/2)*2+1
+7110 r%(i,2)=fnr(3)*2+2:r%(i,3)=fnr(3)*2+2
+7120 r%(i,0)=fnr((20-r%(i,2))/2)*2+1
+7125 r%(i,1)=fnr((20-r%(i,3))/2)*2+1
 
 rem ... if this is the first room, no checking or tunnel is needed.
 
@@ -239,7 +242,7 @@ rem ... now draw a tunnel.  pick a room dr < i,
 rem ... and a random location on room i's north wall
 rem ... and a random location on room dr's west wall
 
-7400 dr=int(rnd(1)*i):rx=int(rnd(1)*r%(i,2))+r%(i,0):ry=int(rnd(1)*r%(dr,3))+r%(dr,1)
+7400 dr=fnr(i):rx=fnr(r%(i,2))+r%(i,0):ry=fnr(r%(dr,3))+r%(dr,1)
 
 rem ... tunnel north or south as appropriate...
 
@@ -260,9 +263,9 @@ rem ... now shadow in the rooms
 
 rem ... and pick which room has the stairs, and display dungeon level at bottom
 
-7900 rs=int(rnd(1)*5):c=dl+128:x=0:y=22:gosub7
+7900 rs=fnr(5):c=dl+128:x=0:y=22:gosub7
 
 rem ... place hero.  pick a room and reveal it.  then put him in it, dammit.
 rem ... tail call!
 
-7910 dr=int(rnd(1)*5):gosub6100:gosub8:hx=x:hy=y:c=81:co=6:goto7
+7910 dr=fnr(5):gosub6100:gosub8:hx=x:hy=y:c=81:co=6:goto7
