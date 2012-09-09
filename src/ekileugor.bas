@@ -17,7 +17,6 @@ rem mv        : number to print after message (if not -1)
 rem mu        : message-up flag
 
 rem hx,hy     : hero's position
-rem mm        : max number of monsters (constant, minus one)
 rem mn        : current monster number
 rem m%(#,p)   : monster matrix: first dimension is mn, second is:
 rem           :   0 = x position
@@ -45,6 +44,12 @@ rem           :   2 = room width minus one
 rem           :   3 = room height minus one
 rem dr        : destination room during dungeon level creation & revealing
 rem rs        : room with stairs (picked during level creation)
+
+#ifdef FULL
+#define MAX_MONSTERS 10
+#else
+#define MAX_MONSTERS 7
+#endif
 
 10 gosub 8000:goto100
 
@@ -78,12 +83,16 @@ rem main loop
 130 ifk$="k"thendy=1:goto 500
 140 ifk$="l"thendx=1:goto 500
 150 ifk$="{f1}"thensb=sb+1:gosub1100
-160 ifk$="r"then400
+160 ifk$="r"then200
 180 goto100
+
+rem rest
+
+200 ifhp<mhthenhp=hp+int(rnd(1)*1.15)
 
 rem monsters move
 
-400 formn=0tomm
+400 formn=0to MAX_MONSTERS
 405 ifm%(mn,3)<=0then490
 410 x=m%(mn,0):y=m%(mn,1):dx=sgn(hx-x):dy=sgn(hy-y)
 420 gosub20
@@ -112,7 +121,7 @@ rem ... first, find monster
 
 700 mn=0
 705 ifm%(mn,0)=hx+dxandm%(mn,1)=hy+dythen720
-710 mn=mn+1:ifmn<=mmthen705
+710 mn=mn+1:ifmn<=MAX_MONSTERS then705
 
 rem ... SOMETHING IS WRONG.
 
@@ -161,7 +170,11 @@ rem status
 rem erase status
 
 1100 print"{home}{blk}{rvs on}                      ";
+#ifdef FULL
 1105 ifsb>3thensb=0
+#else
+1105 ifsb>1thensb=0
+#endif
 1110 return
 
 rem display message
@@ -218,7 +231,7 @@ rem ... and stairs, if this is that room
 
 rem allocate monster at x,y
 
-6500 mn=-1:fori=0tomm:ifm%(i,3)=0thenmn=i:i=10
+6500 mn=-1:fori=0to MAX_MONSTERS:ifm%(i,3)=0thenmn=i:i=10
 6510 next
 6520 ifmn=-1thenreturn
 6530 m%(mn,0)=x:m%(mn,1)=y:m%(mn,2)=19:m%(mn,3)=rnd(1)*6+1
@@ -239,7 +252,7 @@ rem ... first clear the screen
 
 rem ... clear the monster table
 
-7060 fori=0tomm:m%(i,3)=0:next
+7060 fori=0to MAX_MONSTERS:m%(i,3)=0:next
 
 rem ... then make some rooms
 
@@ -321,8 +334,8 @@ rem ... place hero.  pick a room and reveal it.  then put him in it, dammit.
 
 rem init
 
-8000 dimm%(9,3),r%(4,3)
-8005 sc=7680:cm=38400:mh=31:hp=mh:dl=1:mm=9
+8000 dimm%(MAX_MONSTERS,3),r%(4,3)
+8005 sc=7680:cm=38400:mh=31:hp=mh:dl=1
 #ifdef FULL
 8010 sg=10:in=11:de=12
 #endif
