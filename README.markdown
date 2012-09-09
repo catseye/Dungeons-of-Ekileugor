@@ -85,9 +85,7 @@ Run `MINI=yes make.sh` to build the MINI version of the game.
 TODO
 ----
 
-*   Gold should be more plentiful on deeper levels
 *   Experience level should increase your ability to hit/damage?
-*   Ensure rooms can actually extend to the bottom and right of map
 *   Announce gold or health potion picked up
 
 Discussion

@@ -94,7 +94,7 @@ rem monsters move
 rem hero can (and does) move
 
 500 x=hx:y=hy:gosub5:ifc=19thengosub700:goto400
-520 ifc=28thenau=au+fnr(20)+1:c=32
+520 ifc=28thenau=au+int(fnr(20)*(1+(dl/5)))+1:c=32
 530 ifc=65thenpt=pt+1:c=32
 540 ifc=233thendl=dl+1:gosub7000:goto10
 550 ifc=102thengosub6000:goto500
@@ -220,8 +220,8 @@ rem ... then make some rooms
 
 7100 fori=0to4
 7110 r%(i,2)=fnr(3)*2+2:r%(i,3)=fnr(3)*2+2
-7120 r%(i,0)=fnr((20-r%(i,2))/2)*2+1
-7125 r%(i,1)=fnr((20-r%(i,3))/2)*2+1
+7120 r%(i,0)=fnr((22-r%(i,2))/2)*2+1
+7125 r%(i,1)=fnr((22-r%(i,3))/2)*2+1
 
 rem ... if this is the first room, no checking or tunnel is needed.
 
