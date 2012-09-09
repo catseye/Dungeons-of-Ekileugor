@@ -346,7 +346,11 @@ rem ... tricky! tricky! tail call!
 
 rem died
 
+#ifdef FULL
 9000 m$="you have died":mv=-1:gosub4000
 9010 m$="on dungeon level":mv=dl:gosub4000
 9020 m$="with gold":mv=au:gosub4000:gosub4000
-9030 print "{clr}"
+9030 print"{clr}"
+#else
+9000 gosub4000:print"{clr}level"dl"gold"au
+#endif
