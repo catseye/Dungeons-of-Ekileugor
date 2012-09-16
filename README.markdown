@@ -1,6 +1,8 @@
 Dungeons of Ekileugor
 =====================
 
+Version 1.0
+
 _Dungeons of Ekileugor_ is a little roguelike game for the **unexpanded**
 Commodore VIC-20.  Despite the limitations of this architecture, it supports
 a respectable subset of the usual "dungeon furniture":
@@ -14,7 +16,6 @@ a respectable subset of the usual "dungeon furniture":
 *   experience points for victory in combat, experience levels
 *   queued status messages
 *   progressively more difficult dungeon levels
-*   whatever else I can squeeze in: see TODO, below.
 
 Dungeons of Ekileugor is written in Commodore BASIC 2.0.  It makes use of
 colour and the Commodore graphics characters, but not of sound effects or a
@@ -62,7 +63,7 @@ You will also notice that the game ends rather abruptly when you die.  If
 you would like to see your final score (to see if you have beaten your
 personal record, for example), after the game ends, type:
 
-    ?au,dl,xl
+    ?au,dl,xp,xl
 
 This will display the amount of gold you accumulated, the dungeon level
 you died on, the experience points you accumulated, and the experience level
@@ -77,8 +78,11 @@ tools are required:
 *   `yucca` from the [yucca distribution][]
 *   `petcat` from the [VICE][] distribution
 
+`yucca` is only used to remove the `REM` statements, and to statically check
+that the program is not jumping to an undefined line number.  You could
+instead use `grep` to remove the `REM`s and blank lines.
+
 Run `make.sh test` to start the game in `xvic` immediately after building.
-Run `MINI=yes make.sh` to build the MINI version of the game.
 
 [yucca distribution]: http://catseye.tc/projects/yucca/
 [VICE]: http://vice-emu.sourceforge.net/
@@ -106,5 +110,15 @@ justify the sharing of a code base with another version of the program, I
 decided to concentrate on it, and save the FULL version for some potentially
 mythical sequel.
 
-Really, this project was undertaken mostly just as an excuse to use the word
-"Ekileugor" in the title (have you figured it out yet?)
+So, yeah, basically this game turned out to be "how much of a classic
+roguelike can I stuff into an unexpanded VIC-20?"  I was originally thinking
+of writing it in assembly, with the Ophis assembler, but I suspected that
+that would not be much more space-efficient, and run speed was not a primary
+concern.  Some parts of the code could probably be done in less space with
+strategic machine code, but I don't know if it would shave enough off the
+size to permit adding any new, significant features.  (Currently, after the
+program has ended, `?FRE(0)` will report that there are around 14 bytes of
+free memory available, which is pretty darn close to nothing.)
+
+But really, this project was undertaken mostly just as an excuse to use the
+word "Ekileugor" in the title (have you figured it out yet?)
