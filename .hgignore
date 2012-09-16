@@ -1,7 +1,3 @@
-syntax: regexp
-
-^bin/
-
 syntax: glob
 
-*.tmp.bas
+*.yucca.bas

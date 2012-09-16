@@ -1,5 +1,6 @@
 rem dungeons of ekileugor
-rem conceived august 2012, chris pressey, cat's eye technologies
+rem conceived august 2012, implemented september 2012,
+rem chris pressey, cat's eye technologies
 
 rem i,j       : temporaries (loops)
 
