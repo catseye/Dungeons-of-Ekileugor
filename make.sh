@@ -1,11 +1,10 @@
 #!/bin/sh
-# usage: ./make.sh [test]
+# usage: ./make.sh ekileugor [test]
 mkdir -p bin
-yucca -R -x src/ekileugor.bas > src/ekileugor.yucca.bas || exit $?
-petcat -w2 -o bin/ekileugor.prg -- src/ekileugor.yucca.bas || exit $?
-rm -f src/ekileugor.yucca.bas
-ls -la bin/ekileugor.prg
-if [ "x$1" = "xtest" ]; then
-  xvic bin/ekileugor.prg
+yucca -R -x src/$1.bas > src/$1.yucca.bas || exit $?
+petcat -w2 -o bin/$1.prg -- src/$1.yucca.bas || exit $?
+rm -f src/$1.yucca.bas
+ls -la bin/$1.prg
+if [ "x$2" = "xtest" ]; then
+  xvic bin/$1.prg
 fi
-

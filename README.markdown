@@ -74,8 +74,8 @@ you achieved.
 Building
 --------
 
-To build the `PRG` file from the `BAS` file, run `make.sh`.  The following
-tools are required:
+To build the `PRG` file from the `BAS` file, run `make.sh ekileugor`.
+The following tools are required:
 
 *   `yucca` from the [yucca distribution][]
 *   `petcat` from the [VICE][] distribution
@@ -84,7 +84,8 @@ tools are required:
 that the program is not jumping to an undefined line number.  You could
 instead use `grep` to remove the `REM`s and blank lines.
 
-Run `make.sh test` to start the game in `xvic` immediately after building.
+Run `make.sh ekileugor test` to start the game in `xvic` immediately after
+building.
 
 [yucca distribution]: http://catseye.tc/projects/yucca/
 [VICE]: http://vice-emu.sourceforge.net/
