@@ -1,6 +1,8 @@
-rem dungeons of ekileugor
-rem conceived august 2012, implemented september 2012,
+rem dungeons of ekileugor ii -- the rings of airom
+rem in development, 2013 (this may go nowhere, you understand)
 rem chris pressey, cat's eye technologies
+
+rem requires 3k expansion memory (bank 0) on the vic-20!!
 
 rem i,j       : temporaries (loops)
 
@@ -22,6 +24,7 @@ rem m%(#,p)   : monster matrix: first dimension is mn, second is:
 rem           :   0 = x position
 rem           :   1 = y position
 rem           :   2 = monster hp
+rem           :   3 = monster type (screen code)
 
 rem dm        : damage done during combat
 
@@ -45,7 +48,7 @@ rem rs        : room with stairs (picked during level creation)
 rem line 1 is reserved for a possible machine language thing
 
 2 deffnr(x)=int(rnd(1)*x)
-4 dimm%(7,2),r%(4,3):sc=7680:cm=38400:mh=19:xg=10:hp=mh:dl=1:print"{clr}":gosub7000:goto10
+4 dimm%(7,3),r%(4,3):sc=7680:cm=38400:mh=19:xg=10:hp=mh:dl=1:print"{clr}":gosub7000:goto10
 
 rem short, frequently-called routines
 
@@ -89,7 +92,7 @@ rem monsters move
 440 ifrnd(1)<.3thendx=0:goto420
 450 ifrnd(1)<.3thendy=0:goto420
 455 goto490
-460 gosub6:x=x+dx:y=y+dy:c=19:co=2:gosub7
+460 gosub6:x=x+dx:y=y+dy:c=m%(mn,3):co=2:gosub7
 480 m%(mn,0)=x:m%(mn,1)=y
 490 next:goto10
 
@@ -212,8 +215,9 @@ rem allocate monster at x,y
 
 6500 fori=0to7:ifm%(i,2)=0thengoto6530
 6510 next:return
-rem ... tail call!
-6530 m%(i,0)=x:m%(i,1)=y:m%(i,2)=rnd(1)*6+dl:c=19:co=2:goto7
+6530 m%(i,0)=x:m%(i,1)=y:m%(i,2)=rnd(1)*6+dl:m%(i,3)=19
+6540 c=m%(i,3):co=2:gosub7
+6545 return
 
 rem init level
 
