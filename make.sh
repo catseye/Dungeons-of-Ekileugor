@@ -4,9 +4,21 @@ if [ -z $1 ]; then
 else
     TARGET=$1
 fi
+
+# $1001 is the BASIC memory start address on the unexpanded VIC-20
+tokenize() {
+  if which hatoucan >/dev/null; then
+    hatoucan -l 1001 <$1 >$2
+  elif which petcat >/dev/null; then
+    petcat -l 1001 -w2 -o $2 -- $1
+  else
+    echo 'ERROR: no suitable Commodore BASIC 2.0 tokenizer found'
+    exit 1
+  fi
+}
+
 mkdir -p bin
 yucca -R -x src/$TARGET.bas > src/$TARGET.yucca.bas || exit $?
-# $1001 is the BASIC memory start address on the unexpanded VIC-20
-petcat -l 1001 -w2 -o bin/$TARGET.prg -- src/$TARGET.yucca.bas || exit $?
+tokenize src/$TARGET.yucca.bas bin/$TARGET.prg || exit $?
 rm -f src/$TARGET.yucca.bas
 ls -la bin/$TARGET.prg
