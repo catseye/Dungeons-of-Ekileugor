@@ -3,7 +3,7 @@ Dungeons of Ekileugor
 
 Version 1.0
 
-![Screenshot of Dungeons of Ekileugor](https://raw.github.com/catseye/Dungeons-of-Ekileugor/master/images/dungeons-of-ekileugor.png)
+![Screenshot of Dungeons of Ekileugor](images/dungeons-of-ekileugor.png?raw=true)
 
 _Dungeons of Ekileugor_ is a little roguelike game for the **unexpanded**
 Commodore VIC-20.  Despite the limitations of this architecture, it supports
