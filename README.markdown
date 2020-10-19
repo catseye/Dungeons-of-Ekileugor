@@ -1,7 +1,12 @@
 Dungeons of Ekileugor
 =====================
 
-Version 1.0
+Version 1.0 | _Entry_ [@ catseye.tc](https://catseye.tc/node/Dungeons%20of%20Ekileugor)
+| _See also:_ [Bubble Escape](https://github.com/catseye/Bubble-Escape#readme)
+∘ [hatoucan](https://github.com/catseye/hatoucan#readme)
+∘ [yucca](https://github.com/catseye/yucca#readme)
+
+- - - -
 
 ![Screenshot of Dungeons of Ekileugor](images/dungeons-of-ekileugor.png?raw=true)
 
