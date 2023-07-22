@@ -70,10 +70,10 @@ rem main loop
 
 10 gosub900:mu=0:dx=0:dy=0
 11 getk$:ifk$=""then11
-12 ifk$="i"thendy=-1:goto 500
-13 ifk$="j"thendx=-1:goto 500
-14 ifk$="k"thendy=1:goto 500
-15 ifk$="l"thendx=1:goto 500
+12 ifk$="{up}"thendy=-1:goto 500
+13 ifk$="{left}"thendx=-1:goto 500
+14 ifk$="{down}"thendy=1:goto 500
+15 ifk$="{rght}"thendx=1:goto 500
 16 ifk$="r"then400
 17 ifk$="q"andpt>0thenpt=pt-1:mv=fnr(6)+2:hp=hp+mv:m$="quaffed for":gosub800:goto19
 18 goto10
@@ -89,14 +89,14 @@ rem monsters move
 440 ifrnd(1)<.3thendx=0:goto420
 450 ifrnd(1)<.3thendy=0:goto420
 455 goto490
-460 gosub6:x=x+dx:y=y+dy:c=19:co=2:gosub7
+460 gosub6:x=x+dx:y=y+dy:c=7:co=2:gosub7
 480 m%(mn,0)=x:m%(mn,1)=y
 490 next:goto10
 
 rem hero can (and does) move
 
-500 x=hx:y=hy:gosub5:ifc=19thengosub700:goto400
-520 ifc=28thenmv=int(fnr(20)*(1+(dl/5)))+1:au=au+mv:m$="gold:":gosub800:c=32
+500 x=hx:y=hy:gosub5:ifc=7thengosub700:goto400
+520 ifc=104thenmv=int(fnr(20)*(1+(dl/5)))+1:au=au+mv:m$="gold:":gosub800:c=32
 530 ifc=65thenmv=-1:m$="potion":gosub800:pt=pt+1:c=32
 540 ifc=233thendl=dl+1:gosub7000:goto10
 550 ifc=102thengosub6000:goto500
@@ -109,8 +109,8 @@ rem hero can (and does) move
 rem monster attack hero!
 
 600 mv=-1:ifrnd(1)*(7-dl/4)<2then630
-620 m$="snake misses":gosub800:return
-630 m$="snake hits for"
+620 m$="goblin misses":gosub800:return
+630 m$="goblin hits for"
 
 rem ... also an entry point (trap)
 
@@ -126,7 +126,7 @@ rem chest
 670 i=rnd(1):ifi<.2thenc=86:goto560
 672 ifi<.5thenm$="locked":mv=-1:gosub800:goto400
 674 ifi>.9thenc=65:goto530
-676 c=28:goto520
+676 c=104:goto520
 
 rem hero attack monster!
 rem ... first, find monster
@@ -147,7 +147,7 @@ rem ... see if hit. simple for now.
 740 m%(mn,2)=m%(mn,2)-dm:xp=xp+fnr(3)*dl+1
 743 ifxp>xgthenxl=xl+1:xg=xg*2:mh=mh+fnr(8)+2:hp=mh:m$="gain exp,level":mv=xl:gosub800:goto743
 745 ifm%(mn,2)>0thenreturn
-750 mv=-1:m$="you killed snake":gosub800
+750 mv=-1:m$="you killed goblin":gosub800
 760 x=m%(mn,0):y=m%(mn,1):gosub6
 765 m%(mn,0)=-1:m%(mn,1)=-1:m%(mn,2)=0
 780 x=hx:y=hy:return
@@ -197,7 +197,7 @@ rem ... here thar be monsters
 
 rem ... and gold and traps and potions and chests
 
-6300 j=fnr(3):ifj>0thenfori=1toj:gosub8:c=28:co=7:gosub7:next
+6300 j=fnr(3):ifj>0thenfori=1toj:gosub8:c=104:co=7:gosub7:next
 6302 ifrnd(1)>.3thengosub8:c=86:co=1:gosub7
 6304 ifrnd(1)>.5thengosub8:c=65:co=4:gosub7
 6306 ifr%(dr,2)>2andrnd(1)>.6thengosub8:c=98:co=2:gosub7
@@ -213,7 +213,7 @@ rem allocate monster at x,y
 6500 fori=0to7:ifm%(i,2)=0thengoto6530
 6510 next:return
 rem ... tail call!
-6530 m%(i,0)=x:m%(i,1)=y:m%(i,2)=rnd(1)*6+dl:c=19:co=2:goto7
+6530 m%(i,0)=x:m%(i,1)=y:m%(i,2)=rnd(1)*6+dl:c=7:co=2:goto7
 
 rem init level
 
